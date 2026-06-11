@@ -7,6 +7,7 @@ import {
   clearStoredData,
   type StoredUser,
   type StoredAppState,
+  updateLoginStreak,
 } from '../../lib/storage';
 import { signOut as authSignOut, handleRedirectResult } from '../../lib/auth';
 import { listenToAuthState } from '../../lib/firebase';
@@ -42,6 +43,18 @@ const DEFAULT_CHARACTER = {
   accessoryPos: { x: 0, y: 0 },
 };
 
+const DEFAULT_DAILY_GOALS = {
+  water: 8,
+  calories: 2000,
+  steps: 10000,
+  workoutMinutes: 30,
+};
+
+const getTodayString = (): string => {
+  const today = new Date();
+  return today.toISOString().split('T')[0];
+};
+
 interface AppState {
   language: Language;
   setLanguage: (lang: Language) => void;
@@ -71,12 +84,29 @@ interface AppState {
   resetToDefaults: () => void;
   darkMode: boolean;
   setDarkMode: (v: boolean) => void;
+  currentStreak: number;
+  dailyGoals: {
+    water: number;
+    calories: number;
+    steps: number;
+    workoutMinutes: number;
+  };
+  dailyProgress: {
+    water: number;
+    calories: number;
+    steps: number;
+    workoutMinutes: number;
+    date: string;
+  };
+  updateDailyGoals: (goals: any) => void;
+  updateDailyProgress: (progress: any) => void;
 }
 
 const AppContext = createContext<AppState | undefined>(undefined);
 
 function loadInitialState() {
   const stored = getStoredAppState();
+  const today = getTodayString();
   if (stored) {
     return {
       language: stored.language || 'he',
@@ -86,6 +116,11 @@ function loadInitialState() {
       socialData: stored.socialData || DEFAULT_SOCIAL,
       characterState: stored.characterState || DEFAULT_CHARACTER,
       workoutHistory: stored.workoutHistory || DEFAULT_WORKOUT_HISTORY,
+      currentStreak: stored.currentStreak || 0,
+      dailyGoals: stored.dailyGoals || DEFAULT_DAILY_GOALS,
+      dailyProgress: stored.dailyProgress?.date === today 
+        ? stored.dailyProgress 
+        : { water: 0, calories: 0, steps: 0, workoutMinutes: 0, date: today },
     };
   }
   return {
@@ -96,6 +131,9 @@ function loadInitialState() {
     socialData: DEFAULT_SOCIAL,
     characterState: DEFAULT_CHARACTER,
     workoutHistory: DEFAULT_WORKOUT_HISTORY,
+    currentStreak: 0,
+    dailyGoals: DEFAULT_DAILY_GOALS,
+    dailyProgress: { water: 0, calories: 0, steps: 0, workoutMinutes: 0, date: today },
   };
 }
 
@@ -108,6 +146,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [characterState, setCharacterState] = useState<any>(() => loadInitialState().characterState);
   const [workoutHistory, setWorkoutHistory] = useState<any[]>(() => loadInitialState().workoutHistory);
   const [currentUser, setCurrentUser] = useState<StoredUser | null>(() => getStoredUser());
+  const [currentStreak, setCurrentStreak] = useState<number>(() => loadInitialState().currentStreak);
+  const [dailyGoals, setDailyGoals] = useState<any>(() => loadInitialState().dailyGoals);
+  const [dailyProgress, setDailyProgress] = useState<any>(() => loadInitialState().dailyProgress);
   const [darkMode, setDarkModeState] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('lahoz_darkMode');
@@ -122,6 +163,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
     return false;
   });
+
+  // Update streak on app load
+  useEffect(() => {
+    const newStreak = updateLoginStreak();
+    setCurrentStreak(newStreak);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('lahoz_darkMode', String(darkMode));
@@ -235,6 +282,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  const updateDailyGoals = useCallback((goals: any) => {
+    setDailyGoals((prev: any) => ({ ...prev, ...goals }));
+  }, []);
+
+  const updateDailyProgress = useCallback((progress: any) => {
+    setDailyProgress((prev: any) => ({ ...prev, ...progress }));
+  }, []);
+
   const persistState = useCallback(() => {
     saveAppState({
       language,
@@ -244,8 +299,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       socialData,
       characterState,
       workoutHistory,
+      currentStreak,
+      dailyGoals,
+      dailyProgress,
     });
-  }, [language, userData, points, nutritionData, socialData, characterState, workoutHistory]);
+  }, [language, userData, points, nutritionData, socialData, characterState, workoutHistory, currentStreak, dailyGoals, dailyProgress]);
 
   const loadStoredState = useCallback((state: StoredAppState) => {
     if (state.language) setLanguageState(state.language);
@@ -316,8 +374,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         darkMode,
         setDarkMode,
         hasSeenMainTutorial,
+        currentStreak,
         setHasSeenMainTutorial,
         showMainTutorial,
+        dailyGoals,
+        dailyProgress,
+        updateDailyGoals,
+        updateDailyProgress,
       }}
     >
       <div

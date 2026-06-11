@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router';
 import { MobileContainer } from '../components/MobileContainer';
 import { useApp } from '../context/AppContext';
+import { NewTopBar } from '../components/NewTopBar';
 import { ChevronDown, Clock, Footprints, MapPin, Play, History, Calendar, Share2, BarChart2, ChevronUp, ChevronLeft, ChevronRight, Star, X, Sparkles } from 'lucide-react';
 import { Button } from '../components/ui';
 import { showToast } from '../components/ui/toast';
@@ -194,38 +195,20 @@ export const WorkoutsScreen = () => {
   ];
 
   return (
-    <MobileContainer className="min-h-screen relative flex flex-col"
+    <MobileContainer className="min-h-screen relative flex flex-col bg-white"
     >
       {/* Header */}
-      <div className="p-4 pb-0 relative">
-        <button
-          onClick={() => navigate('/main')}
-          className="absolute top-6 left-6 p-2 bg-gray-100 rounded-full text-gray-600 shadow-sm border border-gray-200 z-10 rtl:left-auto rtl:right-6"
-        >
-          {isRTL ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-        </button>
-        <div className="flex items-center justify-between mb-4 pt-2">
-          <div></div>
-          <p className={`font-bold text-lg ${darkMode ? 'text-white' : 'text-gray-800'}`}>מרכז האימונים</p>
-          <div
-            onClick={() => navigate('/points')}
-            className={`flex items-center rounded-full px-3 py-1.5 shadow-lg space-x-2 border cursor-pointer transition-colors ${darkMode ? 'bg-slate-800 border-slate-700 hover:bg-slate-700' : 'bg-white border-gray-100 hover:bg-gray-50'}`}
-          >
-            <Star className="text-yellow-400 fill-yellow-400" size={16} />
-            <span className={`font-black text-sm ${darkMode ? 'text-slate-100' : 'text-gray-800'}`}>{points}</span>
-          </div>
-        </div>
+      <NewTopBar title="מרכז האימונים" />
 
-        <div className="space-y-1 mt-2">
-          <p className="text-xs font-black text-gray-400 uppercase tracking-widest px-1">מה עושים היום?</p>
+      <div className="p-4">
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-gray-400 uppercase tracking-widest">מה עושים היום?</p>
           <button
             onClick={() => setShowTypeModal(true)}
-            className="w-full bg-gray-50 rounded-2xl p-5 flex items-center justify-between shadow-sm border border-gray-100 group active:scale-95 transition-all"
+            className="w-full bg-[#F5F5F5] rounded-2xl p-5 flex items-center justify-between"
           >
-            <span className="font-black text-xl text-gray-800 tracking-tight">{workoutType}</span>
-            <div className="bg-orange-100 p-2 rounded-xl group-hover:rotate-180 transition-transform">
-              <ChevronDown className="text-orange-600" size={24} />
-            </div>
+            <span className="font-bold text-xl text-gray-800">{workoutType}</span>
+            <ChevronDown className="text-gray-600" size={24} />
           </button>
         </div>
       </div>

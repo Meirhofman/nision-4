@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { MobileContainer } from '../components/MobileContainer';
 import { useApp } from '../context/AppContext';
+import { UserAvatar } from '../components/UserAvatar';
 import {
-    ArrowLeft, Moon, Sun, User, Phone, Database, Globe, Bell, Star, Mail, Lock, LogOut, Trash2, ChevronRight, X,
+    ArrowLeft, Moon, Sun, Phone, Database, Globe, Bell, Star, Mail, Lock, LogOut, Trash2, ChevronRight, X,
     Shield, ShieldAlert, MonitorPlay, Key, AlertTriangle
 } from 'lucide-react';
 import { Drawer } from 'vaul';
@@ -193,13 +194,11 @@ export const SettingsScreen = () => {
 
                 {/* Profile Section */}
                 <div className={`p-4 rounded-2xl flex items-center gap-4 shadow-sm ${darkMode ? 'bg-card' : 'bg-white'}`}>
-                    <div className="w-16 h-16 rounded-full bg-transparent flex items-center justify-center overflow-hidden">
-                        {currentUser?.photoURL ? (
-                            <img src={currentUser.photoURL} alt="" className="w-full h-full object-cover" style={{ background: 'transparent' }} />
-                        ) : (
-                            <User size={32} className="text-gray-400" />
-                        )}
-                    </div>
+                    <UserAvatar
+                        photoURL={currentUser?.photoURL}
+                        displayName={userData?.displayName || currentUser?.displayName}
+                        size={64}
+                    />
                     <div className="flex-1">
                         <h2 className={`text-lg font-bold ${darkMode ? 'text-foreground' : 'text-gray-900'}`}>{userData?.displayName || currentUser?.displayName || t('userName')}</h2>
                         <p className={`text-sm ${darkMode ? 'text-muted-foreground' : 'text-gray-500'}`}>{currentUser?.email || t('startJourney')}</p>

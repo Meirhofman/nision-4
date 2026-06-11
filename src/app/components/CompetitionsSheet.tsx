@@ -1,4 +1,5 @@
-import { X, Users, MapPin } from 'lucide-react';
+import { X, MapPin } from 'lucide-react';
+import { UserAvatar } from './UserAvatar';
 
 interface CompetitionsSheetProps {
   isOpen: boolean;
@@ -12,7 +13,11 @@ const competitions = [
     nameEn: 'Tel Aviv Marathon',
     prize: 500,
     participants: 324,
-    avatars: ['👨', '👧', '👦'],
+    participants_preview: [
+      { displayName: 'דני', photoURL: null },
+      { displayName: 'שרה', photoURL: null },
+      { displayName: 'יוסי', photoURL: null },
+    ],
     gradient: 'from-[#ff4d6d] to-orange-500',
     icon: '🏃'
   },
@@ -22,7 +27,10 @@ const competitions = [
     nameEn: 'Cycling Challenge',
     prize: 300,
     participants: 156,
-    avatars: ['👦', '👨'],
+    participants_preview: [
+      { displayName: 'יוסי', photoURL: null },
+      { displayName: 'דני', photoURL: null },
+    ],
     gradient: 'from-cyan-500 to-blue-600',
     icon: '🚴'
   },
@@ -32,7 +40,10 @@ const competitions = [
     nameEn: 'Park Yoga',
     prize: 150,
     participants: 89,
-    avatars: ['👧', '👩'],
+    participants_preview: [
+      { displayName: 'שרה', photoURL: null },
+      { displayName: 'נועה', photoURL: null },
+    ],
     gradient: 'from-purple-600 to-pink-500',
     icon: '🧘'
   }
@@ -46,7 +57,7 @@ const localCompetitions = [
     prize: 200,
     participants: 67,
     distance: '1.2 ק"מ',
-    avatars: ['👨'],
+    participants_preview: [{ displayName: 'דני', photoURL: null }],
     gradient: 'from-amber-500 to-orange-600',
     icon: '💪'
   }
@@ -98,13 +109,17 @@ export default function CompetitionsSheet({ isOpen, onClose }: CompetitionsSheet
                 <div className="bg-white dark:bg-[#23234a] p-5">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex -space-x-2">
-                      {comp.avatars.map((avatar, idx) => (
-                        <div key={idx} className="w-9 h-9 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full flex items-center justify-center border-2 border-white dark:border-[#23234a] text-lg">
-                          {avatar}
+                      {comp.participants_preview.map((participant, idx) => (
+                        <div key={idx} className="border-2 border-white dark:border-[#23234a] rounded-full">
+                          <UserAvatar
+                            photoURL={participant.photoURL}
+                            displayName={participant.displayName}
+                            size={36}
+                          />
                         </div>
                       ))}
                       <div className="w-9 h-9 bg-gray-200 dark:bg-[#1a1a2e] rounded-full flex items-center justify-center text-xs font-black text-gray-600 dark:text-gray-400 border-2 border-white dark:border-[#23234a]">
-                        +{comp.participants - comp.avatars.length}
+                        +{comp.participants - comp.participants_preview.length}
                       </div>
                     </div>
                     <div className="text-right">
@@ -141,9 +156,13 @@ export default function CompetitionsSheet({ isOpen, onClose }: CompetitionsSheet
                 <div className="bg-white dark:bg-[#23234a] p-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex -space-x-2">
-                      {comp.avatars.map((avatar, idx) => (
-                        <div key={idx} className="w-8 h-8 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full flex items-center justify-center border-2 border-white dark:border-[#23234a]">
-                          {avatar}
+                      {comp.participants_preview.map((participant, idx) => (
+                        <div key={idx} className="border-2 border-white dark:border-[#23234a] rounded-full">
+                          <UserAvatar
+                            photoURL={participant.photoURL}
+                            displayName={participant.displayName}
+                            size={32}
+                          />
                         </div>
                       ))}
                     </div>

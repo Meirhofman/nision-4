@@ -1,5 +1,6 @@
-import { X, Flame } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useState } from 'react';
+import { UserAvatar } from './UserAvatar';
 
 interface LeaderboardSheetProps {
   isOpen: boolean;
@@ -8,32 +9,32 @@ interface LeaderboardSheetProps {
 
 const leaderboardData = {
   day: [
-    { rank: 2, name: 'שרה', nameEn: 'Sarah', avatar: '👧', stat: '10.8 ק"מ', score: 8520 },
-    { rank: 1, name: 'דני', nameEn: 'Danny', avatar: '👨', stat: '12.5 ק"מ', score: 9850 },
-    { rank: 3, name: 'יוסי', nameEn: 'Yossi', avatar: '👦', stat: '9.2 ק"מ', score: 7340 }
+    { rank: 2, name: 'שרה', nameEn: 'Sarah', photoURL: null, stat: '10.8 ק"מ', score: 8520 },
+    { rank: 1, name: 'דני', nameEn: 'Danny', photoURL: null, stat: '12.5 ק"מ', score: 9850 },
+    { rank: 3, name: 'יוסי', nameEn: 'Yossi', photoURL: null, stat: '9.2 ק"מ', score: 7340 }
   ],
   week: [
-    { rank: 2, name: 'נועה', nameEn: 'Noa', avatar: '👩', stat: '42.8 ק"מ', score: 8200 },
-    { rank: 1, name: 'עומר', nameEn: 'Omer', avatar: '🧑', stat: '45.2 ק"מ', score: 9500 },
-    { rank: 3, name: 'מיה', nameEn: 'Mia', avatar: '👧', stat: '38.1 ק"מ', score: 7800 }
+    { rank: 2, name: 'נועה', nameEn: 'Noa', photoURL: null, stat: '42.8 ק"מ', score: 8200 },
+    { rank: 1, name: 'עומר', nameEn: 'Omer', photoURL: null, stat: '45.2 ק"מ', score: 9500 },
+    { rank: 3, name: 'מיה', nameEn: 'Mia', photoURL: null, stat: '38.1 ק"מ', score: 7800 }
   ],
   month: [
-    { rank: 2, name: 'אלון', nameEn: 'Alon', avatar: '🧑', stat: '178 ק"מ', score: 32000 },
-    { rank: 1, name: 'תומר', nameEn: 'Tomer', avatar: '👨', stat: '195 ק"מ', score: 38000 },
-    { rank: 3, name: 'רונית', nameEn: 'Ronit', avatar: '👩', stat: '165 ק"מ', score: 29500 }
+    { rank: 2, name: 'אלון', nameEn: 'Alon', photoURL: null, stat: '178 ק"מ', score: 32000 },
+    { rank: 1, name: 'תומר', nameEn: 'Tomer', photoURL: null, stat: '195 ק"מ', score: 38000 },
+    { rank: 3, name: 'רונית', nameEn: 'Ronit', photoURL: null, stat: '165 ק"מ', score: 29500 }
   ]
 };
 
 const otherRanks = [
-  { rank: 4, name: 'רונית', avatar: '👩', score: 6210 },
-  { rank: 5, name: 'אלון', avatar: '🧑', score: 5890 },
-  { rank: 6, name: 'תומר', avatar: '👦', score: 5120 }
+  { rank: 4, name: 'רונית', photoURL: null, score: 6210 },
+  { rank: 5, name: 'אלון', photoURL: null, score: 5890 },
+  { rank: 6, name: 'תומר', photoURL: null, score: 5120 }
 ];
 
 const activityFeed = [
   {
     id: 1,
-    avatar: '👨',
+    photoURL: null,
     name: 'דני',
     action: 'סיים מרתון שבועי',
     emoji: '🏅',
@@ -46,7 +47,7 @@ const activityFeed = [
   },
   {
     id: 2,
-    avatar: '👧',
+    photoURL: null,
     name: 'שרה',
     action: 'שברה שיא אישי',
     emoji: '⚡',
@@ -127,9 +128,11 @@ export default function LeaderboardSheet({ isOpen, onClose }: LeaderboardSheetPr
                   <div className={`bg-white dark:bg-[#23234a] rounded-3xl p-3 shadow-xl ${height} flex flex-col items-center justify-between`}>
                     <div className="relative mt-2">
                       <div className={`${isFirst ? 'w-16 h-16' : 'w-14 h-14'} bg-gradient-to-br ${ringColor} p-0.5 rounded-full`}>
-                        <div className="w-full h-full bg-white dark:bg-[#1a1a2e] rounded-full flex items-center justify-center text-2xl">
-                          {user.avatar}
-                        </div>
+                        <UserAvatar
+                          photoURL={user.photoURL}
+                          displayName={user.name}
+                          size={isFirst ? 56 : 48}
+                        />
                       </div>
                       <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-6 h-6 bg-gray-900 dark:bg-white rounded-full flex items-center justify-center">
                         <span className="text-white dark:text-gray-900 text-xs font-black">{user.rank}</span>
@@ -155,9 +158,7 @@ export default function LeaderboardSheet({ isOpen, onClose }: LeaderboardSheetPr
                 <div className="text-gray-900 dark:text-white font-black text-sm">{user.score.toLocaleString()}</div>
                 <div className="flex items-center gap-3">
                   <span className="text-gray-900 dark:text-white font-bold text-sm">{user.name}</span>
-                  <div className="w-9 h-9 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full flex items-center justify-center">
-                    {user.avatar}
-                  </div>
+                  <UserAvatar photoURL={user.photoURL} displayName={user.name} size={36} />
                   <div className="w-7 h-7 bg-gray-200 dark:bg-[#1a1a2e] rounded-full flex items-center justify-center">
                     <span className="text-gray-600 dark:text-gray-400 text-xs font-black">{user.rank}</span>
                   </div>
@@ -173,9 +174,7 @@ export default function LeaderboardSheet({ isOpen, onClose }: LeaderboardSheetPr
               {activityFeed.map((item) => (
                 <div key={item.id} className="bg-white dark:bg-[#23234a] rounded-2xl p-4 shadow-md">
                   <div className="flex items-start gap-3 mb-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center">
-                      {item.avatar}
-                    </div>
+                    <UserAvatar photoURL={item.photoURL} displayName={item.name} size={40} />
                     <div className="flex-1 text-right">
                       <div className="text-gray-900 dark:text-white font-black text-sm mb-1">{item.name}</div>
                       <div className="flex items-center gap-2 mb-1">

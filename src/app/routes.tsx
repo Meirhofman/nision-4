@@ -27,7 +27,9 @@ import {
   CharacterScreen,
   WorkoutSummaryScreen,
   WorkoutActiveScreen,
-  PhoneAuthScreen
+  PhoneAuthScreen,
+  LeaderboardStreak,
+  DailyGoals
 } from "./screens";
 
 export const router = createBrowserRouter([
@@ -159,6 +161,14 @@ export const router = createBrowserRouter([
       {
         path: "/main",
         Component: MainScreen,
+      },
+      {
+        path: "/leaderboard-streak",
+        Component: LeaderboardStreak,
+      },
+      {
+        path: "/daily-goals",
+        Component: DailyGoals,
       },
     ]
   }

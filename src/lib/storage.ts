@@ -12,6 +12,13 @@ export interface StoredUser {
   lastLogin: number;
 }
 
+export interface DailyGoals {
+  water: number; // cups/liters
+  calories: number;
+  steps: number;
+  workoutMinutes: number;
+}
+
 export interface StoredAppState {
   userData: {
     age?: number;
@@ -34,6 +41,16 @@ export interface StoredAppState {
   language?: 'en' | 'he';
   workoutHistory?: any[];
   pointsHistory?: any[];
+  lastLoginDate?: string; // YYYY-MM-DD
+  currentStreak?: number;
+  dailyGoals?: DailyGoals;
+  dailyProgress?: {
+    water: number;
+    calories: number;
+    steps: number;
+    workoutMinutes: number;
+    date: string; // YYYY-MM-DD
+  };
 }
 
 export function saveUser(user: StoredUser): void {
@@ -71,6 +88,48 @@ export function getStoredAppState(): StoredAppState | null {
   } catch {
     return null;
   }
+}
+
+function getTodayString(): string {
+  const today = new Date();
+  return today.toISOString().split('T')[0];
+}
+
+function getYesterdayString(): string {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  return yesterday.toISOString().split('T')[0];
+}
+
+export function updateLoginStreak(): number {
+  const storedState = getStoredAppState();
+  const today = getTodayString();
+  const yesterday = getYesterdayString();
+
+  let currentStreak = storedState?.currentStreak || 0;
+  const lastLoginDate = storedState?.lastLoginDate;
+
+  if (lastLoginDate === today) {
+    // Already logged in today, do nothing
+    return currentStreak;
+  }
+
+  if (lastLoginDate === yesterday) {
+    // Streak continues!
+    currentStreak += 1;
+  } else {
+    // Streak broken, reset to 1
+    currentStreak = 1;
+  }
+
+  // Save updated state
+  saveAppState({
+    ...(storedState || {}),
+    lastLoginDate: today,
+    currentStreak: currentStreak,
+  });
+
+  return currentStreak;
 }
 
 export function clearStoredData(): void {

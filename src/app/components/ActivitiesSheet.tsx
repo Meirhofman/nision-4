@@ -1,5 +1,6 @@
 import { X, Plus, Users, Clock } from 'lucide-react';
 import { useState } from 'react';
+import { UserAvatar } from './UserAvatar';
 
 interface ActivitiesSheetProps {
   isOpen: boolean;
@@ -12,7 +13,7 @@ const activities = [
     icon: '🏃',
     nameHe: 'ריצה בפארק',
     nameEn: 'Park Run',
-    organizerAvatar: '👨',
+    organizerPhotoURL: null as string | null,
     organizerName: 'דני',
     participants: 12,
     time: '17:00',
@@ -25,7 +26,7 @@ const activities = [
     icon: '💪',
     nameHe: 'אימון כוח',
     nameEn: 'Strength',
-    organizerAvatar: '👧',
+    organizerPhotoURL: null as string | null,
     organizerName: 'שרה',
     participants: 8,
     time: '18:30',
@@ -38,7 +39,7 @@ const activities = [
     icon: '🚴',
     nameHe: 'רכיבה',
     nameEn: 'Cycling',
-    organizerAvatar: '👦',
+    organizerPhotoURL: null as string | null,
     organizerName: 'יוסי',
     participants: 15,
     time: '16:00',
@@ -51,7 +52,7 @@ const activities = [
     icon: '🧘',
     nameHe: 'יוגה',
     nameEn: 'Yoga',
-    organizerAvatar: '👩',
+    organizerPhotoURL: null as string | null,
     organizerName: 'נועה',
     participants: 20,
     time: '19:00',
@@ -137,9 +138,11 @@ export default function ActivitiesSheet({ isOpen, onClose }: ActivitiesSheetProp
                     <p className="text-gray-600 dark:text-[#9898bb] text-sm">{activity.nameEn}</p>
                     <div className="flex items-center justify-end gap-2 mt-2">
                       <span className="text-gray-600 dark:text-[#9898bb] text-xs">{activity.organizerName}</span>
-                      <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full flex items-center justify-center text-sm">
-                        {activity.organizerAvatar}
-                      </div>
+                      <UserAvatar
+                        photoURL={activity.organizerPhotoURL}
+                        displayName={activity.organizerName}
+                        size={24}
+                      />
                     </div>
                   </div>
                 </div>

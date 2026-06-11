@@ -12,7 +12,6 @@ export { StepWeightHeight } from './questionnaire/StepWeightHeight';
 export { StepGoal } from './questionnaire/StepGoal';
 export { StepHealth } from './questionnaire/StepHealth';
 export { StepFitness } from './questionnaire/StepFitness';
-
 export { StepComplete } from './questionnaire/StepComplete';
 export { SettingsScreen } from './SettingsScreen';
 export { WorkoutsScreen } from './WorkoutsScreen';
@@ -26,3 +25,5 @@ export { CharacterScreen } from './CharacterScreen';
 export { WorkoutSummaryScreen } from './WorkoutSummaryScreen';
 export { PhoneAuthScreen } from './PhoneAuthScreen';
 export { WorkoutActiveScreen } from './WorkoutActiveScreen';
+export { LeaderboardStreak } from './LeaderboardStreak';
+export { DailyGoals } from './DailyGoals';
