@@ -14,6 +14,7 @@ import {
 import { nutritionScreenStrings, Language } from "@/i18n/nutritionScreen";
 import { useNavigate } from 'react-router';
 import { useApp } from '../context/AppContext';
+import { NewTopBar } from '../components/NewTopBar';
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 interface Meal {
@@ -255,8 +256,8 @@ function MealRow({ meal, bg, border, text, muted, onEdit }: {
   const [hovered, setHovered] = useState(false);
   return (
     <div
-      className="p-4 rounded-2xl flex items-center gap-3 relative transition-all"
-      style={{ background: hovered ? `${bg}ee` : bg, border: `1px solid ${hovered ? '#7c3aed' : border}`, cursor: 'default' }}
+      className="p-4 rounded-[16px] flex items-center gap-3 relative transition-all"
+      style={{ background: '#ffffff', border: hovered ? `1px solid #7c3aed` : `0.5px solid #F0F0F0`, cursor: 'default' }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -357,33 +358,24 @@ export function NutritionScreen({ lang = 'he' }: { lang?: Language }) {
         )}
 
         {/* Top Bar */}
-        <div className="flex items-center justify-between p-4" dir="rtl">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full" style={{ background: card, border: `1px solid ${border}` }}>
-            <Star className="w-3.5 h-3.5" style={{ color: '#7C3AED', fill: '#7C3AED' }} />
-            <span className="font-medium" style={{ color: text, fontSize: '13px' }}>1,240</span>
-            <span style={{ color: muted, fontSize: '11px' }}>{t.points}</span>
-          </div>
-          <button onClick={() => navigate(-1)} className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: card, border: `1px solid ${border}` }}>
-            <ChevronRight className="w-5 h-5" style={{ color: text }} />
-          </button>
+        <div className="w-full bg-white rounded-t-[36px] overflow-hidden" dir="rtl">
+          <NewTopBar title="תזונה" />
         </div>
 
         {/* Content Area */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 pb-8" dir="rtl">
 
           {/* Hero Card */}
-          <div className="relative overflow-hidden mb-5 rounded-3xl p-6" style={{ background: 'linear-gradient(135deg,#7C3AED 0%,#A78BFA 100%)' }}>
-            <div className="absolute w-28 h-28 rounded-full opacity-10 bg-white" style={{ top: '-30px', right: '-20px' }} />
-            <div className="absolute w-20 h-20 rounded-full opacity-10 bg-white" style={{ bottom: '10px', left: '-15px' }} />
+          <div className="relative overflow-hidden mb-5 rounded-[20px] p-6" style={{ background: '#ffffff', border: '0.5px solid #F0F0F0' }}>
             <div className="relative z-10">
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <div className="text-xs mb-1 text-white/90">{t.caloriesToday}</div>
-                  <div className="font-black text-white" style={{ fontSize: '32px', lineHeight: 1.1 }}>{totalCalories.toLocaleString()}</div>
+                  <div className="text-xs mb-1" style={{ color: text }}>{t.caloriesToday}</div>
+                  <div className="font-black" style={{ color: text, fontSize: '32px', lineHeight: 1.1 }}>{totalCalories.toLocaleString()}</div>
                 </div>
-                <div className="px-3 py-2 rounded-xl" style={{ background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(8px)' }}>
-                  <div className="text-xs text-white/90">{t.dayScore}</div>
-                  <div className="font-black text-white text-xl">
+                <div className="px-3 py-2 rounded-xl" style={{ background: '#F4F0FF' }}>
+                  <div className="text-xs text-[#534AB7]">{t.dayScore}</div>
+                  <div className="font-black text-[#534AB7] text-xl">
                     {getGrade(totalCalories).grade}
                   </div>
                 </div>
@@ -453,11 +445,11 @@ export function NutritionScreen({ lang = 'he' }: { lang?: Language }) {
 // ─── Sub-components ─────────────────────────────────────────────────────────────
 function MacroPill({ label, value, progress }: { label: string; value: string; progress: number }) {
   return (
-    <div className="flex-1 px-3 py-2 rounded-xl" style={{ background: 'rgba(255,255,255,0.15)' }}>
-      <div className="text-xs mb-1 text-white/90">{label}</div>
-      <div className="font-bold text-sm mb-2 text-white">{value}</div>
-      <div className="h-1 rounded-full" style={{ background: 'rgba(255,255,255,0.2)' }}>
-        <div className="h-full rounded-full bg-white" style={{ width: `${progress}%` }} />
+    <div className="flex-1 px-3 py-2 rounded-xl" style={{ background: '#F9F9F9' }}>
+      <div className="text-xs mb-1 text-gray-500">{label}</div>
+      <div className="font-bold text-sm mb-2 text-gray-900">{value}</div>
+      <div className="h-1 rounded-full" style={{ background: '#E5E5E5' }}>
+        <div className="h-full rounded-full bg-[#534AB7]" style={{ width: `${progress}%` }} />
       </div>
     </div>
   );
@@ -470,15 +462,15 @@ function QuickCard({ icon, label, highlighted, border, text, card, onClick }: {
   return (
     <button
       onClick={onClick}
-      className="p-4 rounded-2xl flex flex-col items-center gap-2 active:scale-95 transition-all"
+      className="p-4 rounded-[16px] flex flex-col items-center gap-2 active:scale-95 transition-all"
       style={{
-        background: highlighted ? 'rgba(124,58,237,0.12)' : card ?? '#fff',
-        border: highlighted ? '2px solid #7C3AED' : `1px solid ${border}`,
+        background: highlighted ? '#F4F0FF' : '#F9F9F9',
+        border: 'none',
       }}
     >
       <div
-        className="w-10 h-10 rounded-xl flex items-center justify-center"
-        style={{ background: highlighted ? '#7C3AED' : 'rgba(124,58,237,0.1)', color: highlighted ? '#FFFFFF' : '#7C3AED' }}
+        className="w-10 h-10 rounded-[12px] flex items-center justify-center"
+        style={{ background: highlighted ? '#534AB7' : '#E8E4FF', color: highlighted ? '#FFFFFF' : '#534AB7' }}
       >
         {icon}
       </div>

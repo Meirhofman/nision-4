@@ -29,7 +29,8 @@ import {
   WorkoutActiveScreen,
   PhoneAuthScreen,
   LeaderboardStreak,
-  DailyGoals
+  DailyGoals,
+  JoinedActivitiesScreen
 } from "./screens";
 
 export const router = createBrowserRouter([
@@ -87,6 +88,10 @@ export const router = createBrowserRouter([
       {
         path: "/nutrition",
         Component: NutritionScreen,
+      },
+      {
+        path: "/joined-activities",
+        Component: JoinedActivitiesScreen,
       },
       {
         path: "/meal-history",

@@ -195,7 +195,7 @@ export const WorkoutsScreen = () => {
   ];
 
   return (
-    <MobileContainer className="min-h-screen relative flex flex-col bg-white"
+    <MobileContainer className="min-h-screen relative flex flex-col bg-[#F9F9F9]"
     >
       {/* Header */}
       <NewTopBar title="מרכז האימונים" />
@@ -205,9 +205,9 @@ export const WorkoutsScreen = () => {
           <p className="text-xs font-medium text-gray-400 uppercase tracking-widest">מה עושים היום?</p>
           <button
             onClick={() => setShowTypeModal(true)}
-            className="w-full bg-[#F5F5F5] rounded-2xl p-5 flex items-center justify-between"
+            className="w-full bg-[#ffffff] border-[0.5px] border-[#F0F0F0] rounded-2xl p-5 flex items-center justify-between"
           >
-            <span className="font-bold text-xl text-gray-800">{workoutType}</span>
+            <span className="font-bold text-xl text-[#2d1f60]">{workoutType}</span>
             <ChevronDown className="text-gray-600" size={24} />
           </button>
         </div>
@@ -227,29 +227,29 @@ export const WorkoutsScreen = () => {
 
         {/* Stats Row */}
         <div className="grid grid-cols-3 gap-3 w-full">
-          <div className="bg-[#FCE7F3] rounded-3xl p-4 flex flex-col items-center justify-center space-y-1 shadow-md border border-pink-100">
-            <Clock size={24} className="text-pink-600 mb-1" />
-            <span className={`text-xl font-black tracking-tighter ${darkMode ? 'text-white' : 'text-gray-800'}`}>24m</span>
-            <span className={`text-[10px] font-black uppercase ${darkMode ? 'text-gray-300' : 'text-gray-400'}`}>זמן פעילות</span>
+          <div className="bg-[#F4F0FF] rounded-3xl p-4 flex flex-col items-center justify-center space-y-1">
+            <Clock size={24} className="text-[#534AB7] mb-1" />
+            <span className={`text-xl font-black tracking-tighter text-[#534AB7]`}>24m</span>
+            <span className={`text-[10px] font-black uppercase text-[#534AB7] opacity-80`}>זמן פעילות</span>
           </div>
-          <div className="bg-[#DCFCE7] rounded-3xl p-4 flex flex-col items-center justify-center space-y-1 shadow-md border border-green-100">
-            <Footprints size={24} className="text-green-600 mb-1" />
-            <span className={`text-xl font-black tracking-tighter ${darkMode ? 'text-white' : 'text-gray-800'}`}>5,420</span>
-            <span className={`text-[10px] font-black uppercase ${darkMode ? 'text-gray-300' : 'text-gray-400'}`}>צעדים</span>
+          <div className="bg-[#F4F0FF] rounded-3xl p-4 flex flex-col items-center justify-center space-y-1">
+            <Footprints size={24} className="text-[#534AB7] mb-1" />
+            <span className={`text-xl font-black tracking-tighter text-[#534AB7]`}>5,420</span>
+            <span className={`text-[10px] font-black uppercase text-[#534AB7] opacity-80`}>צעדים</span>
           </div>
-          <div className="bg-[#FCE7F3] rounded-3xl p-4 flex flex-col items-center justify-center space-y-1 shadow-md border border-pink-100">
-            <MapPin size={24} className="text-pink-600 mb-1" />
-            <span className={`text-xl font-black tracking-tighter ${darkMode ? 'text-white' : 'text-gray-800'}`}>3.2</span>
-            <span className={`text-[10px] font-black uppercase ${darkMode ? 'text-gray-300' : 'text-gray-400'}`}>מרחק (ק״מ)</span>
+          <div className="bg-[#F4F0FF] rounded-3xl p-4 flex flex-col items-center justify-center space-y-1">
+            <MapPin size={24} className="text-[#534AB7] mb-1" />
+            <span className={`text-xl font-black tracking-tighter text-[#534AB7]`}>3.2</span>
+            <span className={`text-[10px] font-black uppercase text-[#534AB7] opacity-80`}>מרחק (ק״מ)</span>
           </div>
         </div>
 
         {/* Start Button */}
         <Button
           onClick={() => setShowWorkoutStartModal(true)}
-          className="w-full h-20 bg-[#FCE7F3] text-pink-600 rounded-3xl shadow-lg flex flex-row items-center justify-center gap-3 active:scale-95 transition-all border-4 border-pink-100"
+          className="w-full h-20 bg-white border-[0.5px] border-[#F0F0F0] text-[#2d1f60] rounded-[16px] flex flex-row items-center justify-center gap-3 active:scale-95 transition-all"
         >
-          <div className="bg-pink-500 p-2 rounded-full text-white shadow-md">
+          <div className="bg-[#534AB7] p-2 rounded-full text-white">
             <Play fill="currentColor" size={24} />
           </div>
           <span className="text-2xl font-black tracking-tight">התחל אימון {workoutType}</span>
@@ -257,24 +257,24 @@ export const WorkoutsScreen = () => {
 
         {/* Grid Options */}
         <div className="grid grid-cols-2 gap-3 w-full pb-20">
-          <button onClick={() => navigate('/history')} className="bg-[#FCE7F3] p-5 rounded-3xl shadow-md border border-pink-100 flex flex-col items-center justify-center gap-2 h-24 hover:bg-pink-200 transition-all group">
-            <History className="text-pink-600 group-hover:rotate-12 transition-transform" size={28} />
-            <span className="text-xs font-black text-pink-700">היסטוריית אימונים</span>
+          <button onClick={() => navigate('/history')} className="bg-white border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 hover:bg-gray-50 transition-all group">
+            <History className="text-[#534AB7] group-hover:rotate-12 transition-transform" size={28} />
+            <span className="text-xs font-black text-[#2d1f60]">היסטוריית אימונים</span>
           </button>
           <button 
             onClick={() => setShowScheduleModal(true)}
-            className="bg-[#DCFCE7] p-5 rounded-3xl shadow-md border border-green-100 flex flex-col items-center justify-center gap-2 h-24 hover:bg-green-200 transition-all group"
+            className="bg-white border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 hover:bg-gray-50 transition-all group"
           >
-            <Calendar className="text-green-600 group-hover:rotate-12 transition-transform" size={28} />
-            <span className="text-xs font-black text-green-700">קבע אימון</span>
+            <Calendar className="text-[#534AB7] group-hover:rotate-12 transition-transform" size={28} />
+            <span className="text-xs font-black text-[#2d1f60]">קבע אימון</span>
           </button>
-          <button onClick={handleShare} className="bg-[#FCE7F3] p-5 rounded-3xl shadow-md border border-pink-100 flex flex-col items-center justify-center gap-2 h-24 hover:bg-pink-200 transition-all group" title={t('shareWithFriends')}>
-            <Share2 className="text-pink-600 group-hover:rotate-12 transition-transform" size={28} />
-            <span className="text-xs font-black text-pink-700">{t('shareWithFriends')}</span>
+          <button onClick={handleShare} className="bg-white border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 hover:bg-gray-50 transition-all group" title={t('shareWithFriends')}>
+            <Share2 className="text-[#534AB7] group-hover:rotate-12 transition-transform" size={28} />
+            <span className="text-xs font-black text-[#2d1f60]">{t('shareWithFriends')}</span>
           </button>
-          <button onClick={() => navigate('/summary')} className="bg-[#DCFCE7] p-5 rounded-3xl shadow-md border border-green-100 flex flex-col items-center justify-center gap-2 h-24 hover:bg-green-200 transition-all group">
-            <BarChart2 className="text-green-600 group-hover:rotate-12 transition-transform" size={28} />
-            <span className="text-xs font-black text-green-700">סיכום ביצועים</span>
+          <button onClick={() => navigate('/summary')} className="bg-white border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 hover:bg-gray-50 transition-all group">
+            <BarChart2 className="text-[#534AB7] group-hover:rotate-12 transition-transform" size={28} />
+            <span className="text-xs font-black text-[#2d1f60]">סיכום ביצועים</span>
           </button>
         </div>
         
@@ -282,9 +282,9 @@ export const WorkoutsScreen = () => {
         <div className="w-full pb-4">
           <button 
             onClick={() => setShowAIModal(true)}
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-3xl shadow-lg flex flex-row items-center justify-center gap-3 active:scale-95 transition-all border-4 border-purple-100"
+            className="w-full bg-[#534AB7] text-white p-4 rounded-[16px] flex flex-row items-center justify-center gap-3 active:scale-95 transition-all"
           >
-            <div className="bg-white p-2 rounded-full text-purple-500 shadow-md">
+            <div className="bg-white p-2 rounded-full text-[#534AB7]">
               <Sparkles size={20} />
             </div>
             <span className="text-lg font-bold">עוזר AI אישי</span>

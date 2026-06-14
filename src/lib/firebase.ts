@@ -1,5 +1,6 @@
 import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth, onAuthStateChanged, type User } from 'firebase/auth';
+import { getFirestore, type Firestore } from 'firebase/firestore';
 
 /** ערכי lazoz-app — גיבוי אם Vite לא טוען .env (חייב להתאים ל-.env) */
 const LAZOZ_FIREBASE = {
@@ -27,6 +28,7 @@ export const firebaseConfig = {
 
 let app: FirebaseApp | null = null;
 let auth: Auth | null = null;
+let firestore: Firestore | null = null;
 
 export function getFirebaseAuth(): Auth | null {
   if (!firebaseConfig.apiKey) return null;
@@ -49,6 +51,17 @@ export function getFirebaseAuth(): Auth | null {
     }
   }
   return auth;
+}
+
+export function getFirebaseFirestore(): Firestore | null {
+  if (!firebaseConfig.apiKey) return null;
+  if (!app) {
+    getFirebaseAuth(); // This will initialize app
+  }
+  if (!firestore && app) {
+    firestore = getFirestore(app);
+  }
+  return firestore;
 }
 
 export const isFirebaseConfigured = Boolean(

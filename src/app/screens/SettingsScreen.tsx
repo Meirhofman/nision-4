@@ -168,7 +168,7 @@ export const SettingsScreen = () => {
     };
 
     return (
-        <MobileContainer className={`min-h-screen relative flex flex-col overflow-y-auto ${darkMode ? 'bg-background text-foreground' : 'bg-[#fff5f7] text-slate-900'}`}>
+        <MobileContainer className={`min-h-screen relative flex flex-col overflow-y-auto ${darkMode ? 'bg-background text-foreground' : 'bg-[#F9F9F9] text-slate-900'}`}>
 
             {/* Header */}
             <div className="p-6 pt-12 flex items-center justify-between sticky top-0 z-10 backdrop-blur-sm">
@@ -182,36 +182,36 @@ export const SettingsScreen = () => {
             <div className="flex-1 overflow-y-auto px-6 pb-24 space-y-6 [&::-webkit-scrollbar]:hidden">
 
                 {/* Dark Mode Toggle */}
-                <div className={`p-4 rounded-2xl flex items-center justify-between shadow-sm ${darkMode ? 'bg-card' : 'bg-white'}`}>
+                <div className={`p-4 rounded-[16px] flex items-center justify-between border-[0.5px] border-[#F0F0F0] bg-white`}>
                     <div className="flex items-center gap-3">
                         <div className={`p-2 rounded-full ${darkMode ? 'bg-indigo-500/20 text-indigo-400' : 'bg-indigo-50 text-indigo-500'}`}>
                             {darkMode ? <Moon size={20} /> : <Sun size={20} />}
                         </div>
                         <span className="font-medium">{t('darkMode')}</span>
                     </div>
-                    <Switch checked={darkMode} onCheckedChange={setDarkMode} />
+                    <Switch checked={darkMode} onCheckedChange={setDarkMode} className="data-[state=checked]:bg-[#534AB7]" />
                 </div>
 
                 {/* Profile Section */}
-                <div className={`p-4 rounded-2xl flex items-center gap-4 shadow-sm ${darkMode ? 'bg-card' : 'bg-white'}`}>
+                <div className={`p-4 rounded-[16px] flex items-center gap-4 border-[0.5px] border-[#F0F0F0] bg-white`}>
                     <UserAvatar
                         photoURL={currentUser?.photoURL}
                         displayName={userData?.displayName || currentUser?.displayName}
-                        size={64}
+                        size={56}
                     />
                     <div className="flex-1">
-                        <h2 className={`text-lg font-bold ${darkMode ? 'text-foreground' : 'text-gray-900'}`}>{userData?.displayName || currentUser?.displayName || t('userName')}</h2>
-                        <p className={`text-sm ${darkMode ? 'text-muted-foreground' : 'text-gray-500'}`}>{currentUser?.email || t('startJourney')}</p>
+                        <h2 className={`text-[16px] font-medium ${darkMode ? 'text-foreground' : 'text-gray-900'}`}>{userData?.displayName || currentUser?.displayName || t('userName')}</h2>
+                        <p className={`text-[13px] ${darkMode ? 'text-muted-foreground' : 'text-[#999999]'}`}>{currentUser?.email || t('startJourney')}</p>
                     </div>
                 </div>
 
                 {/* General Settings Group */}
-                <div className={`rounded-2xl shadow-sm overflow-hidden ${darkMode ? 'bg-card' : 'bg-white'}`}>
+                <div className={`rounded-[16px] border-[0.5px] border-[#F0F0F0] bg-white overflow-hidden`}>
 
                     {/* Phone */}
                     <button 
                         onClick={() => document.querySelector('[data-drawer-trigger="data"]')?.click()}
-                        className="w-full p-4 flex items-center justify-between hover:bg-black/5 transition-colors border-b border-gray-100/10"
+                        className="w-full p-4 flex items-center justify-between hover:bg-black/5 transition-colors border-b-[0.5px] border-[#F0F0F0]"
                     >
                         <div className="flex items-center gap-3">
                             <Phone size={20} className="text-green-500" />
@@ -226,7 +226,7 @@ export const SettingsScreen = () => {
                     {/* Data Bottom Sheet */}
                     <Drawer.Root>
                         <Drawer.Trigger asChild>
-                            <button data-drawer-trigger="data" className="w-full p-4 flex items-center justify-between hover:bg-black/5 transition-colors border-b border-gray-100/10">
+                            <button data-drawer-trigger="data" className="w-full p-4 flex items-center justify-between hover:bg-black/5 transition-colors border-b-[0.5px] border-[#F0F0F0]">
                                 <div className="flex items-center gap-3">
                                     <Database size={20} className="text-blue-500" />
                                     <span className="font-medium">{t('data')}</span>
@@ -487,7 +487,7 @@ export const SettingsScreen = () => {
                     {/* Language */}
                     <button
                         onClick={() => setLanguage(language === 'en' ? 'he' : 'en')}
-                        className="w-full p-4 flex items-center justify-between hover:bg-black/5 transition-colors border-b border-gray-100/10"
+                        className="w-full p-4 flex items-center justify-between hover:bg-black/5 transition-colors border-b-[0.5px] border-[#F0F0F0]"
                     >
                         <div className="flex items-center gap-3">
                             <Globe size={20} className="text-orange-500" />
@@ -500,7 +500,7 @@ export const SettingsScreen = () => {
                     </button>
 
                     {/* Notifications */}
-                    <div className="w-full p-4 flex items-center justify-between border-b border-gray-100/10">
+                    <div className="w-full p-4 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <Bell size={20} className="text-yellow-500" />
                             <span className="font-medium">{t('notifications')}</span>
@@ -520,19 +520,20 @@ export const SettingsScreen = () => {
                                     }
                                 }
                             }} 
+                            className="data-[state=checked]:bg-[#534AB7]"
                         />
                     </div>
                 </div>
 
                 {/* Support Group */}
-                <div className={`rounded-2xl shadow-sm overflow-hidden ${darkMode ? 'bg-card' : 'bg-white'}`}>
+                <div className={`rounded-[16px] border-[0.5px] border-[#F0F0F0] bg-white overflow-hidden`}>
                     <button
                         onClick={() => {
                             showMainTutorial();
                             alert(t('tutorialRestarted'));
                         }}
 
-                        className="w-full p-4 flex items-center justify-between hover:bg-black/5 transition-colors border-b border-gray-100/10"
+                        className="w-full p-4 flex items-center justify-between hover:bg-black/5 transition-colors border-b-[0.5px] border-[#F0F0F0]"
                     >
                         <div className="flex items-center gap-3">
                             <Star size={20} className="text-yellow-500" />
@@ -554,13 +555,26 @@ export const SettingsScreen = () => {
                         </div>
                         <ChevronRight size={16} className="text-gray-400" />
                     </button>
+                    <button
+                        onClick={() => {
+                            navigate('/main');
+                            updateUserData({ hasSeenTour: false });
+                        }}
+                        className="w-full p-4 flex items-center justify-between hover:bg-black/5 transition-colors"
+                    >
+                        <div className="flex items-center gap-3">
+                            <MonitorPlay size={20} className="text-purple-500" />
+                            <span className="font-medium">צפה במדריך האפליקציה</span>
+                        </div>
+                        <ChevronRight size={16} className="text-gray-400" />
+                    </button>
                 </div>
 
                 {/* Parental Controls */}
-                <div className={`rounded-2xl shadow-sm overflow-hidden mb-8 ${darkMode ? 'bg-card' : 'bg-white'}`}>
+                <div className={`rounded-[16px] border-[0.5px] border-[#F0F0F0] bg-white overflow-hidden mb-8`}>
                     <Drawer.Root>
                         <Drawer.Trigger asChild>
-                            <button className="w-full p-4 flex items-center justify-between hover:bg-black/5 transition-colors border-b border-gray-100/10">
+                            <button className="w-full p-4 flex items-center justify-between hover:bg-black/5 transition-colors border-b-[0.5px] border-[#F0F0F0]">
                                 <div className="flex items-center gap-3">
                                     <Shield size={20} className="text-blue-500" />
                                     <span className="font-medium">{t('parentalControls')}</span>
@@ -619,10 +633,10 @@ export const SettingsScreen = () => {
                 </div>
 
                 {/* Account Actions */}
-                <div className={`rounded-2xl shadow-sm overflow-hidden ${darkMode ? 'bg-card' : 'bg-white'}`}>
+                <div className={`rounded-[16px] border-[0.5px] border-[#F0F0F0] bg-white overflow-hidden`}>
                     <Drawer.Root>
                         <Drawer.Trigger asChild>
-                            <button className="w-full p-4 flex items-center justify-between hover:bg-black/5 transition-colors border-b border-gray-100/10">
+                            <button className="w-full p-4 flex items-center justify-between hover:bg-black/5 transition-colors border-b-[0.5px] border-[#F0F0F0]">
                                 <div className="flex items-center gap-3">
                                     <Lock size={20} className="text-gray-500" />
                                     <span className="font-medium">{t('changePassword')}</span>

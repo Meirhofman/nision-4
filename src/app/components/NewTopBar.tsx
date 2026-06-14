@@ -41,12 +41,12 @@ export const NewTopBar: React.FC<NewTopBarProps> = ({ title = "חברתי" }) =>
         </button>
         <button
           onClick={() => navigate('/daily-goals')}
-          className="h-9 px-4 rounded-[20px] bg-[#F4F0FF] flex items-center gap-1.5 active:opacity-80"
+          className="w-[80px] h-[6px] rounded-[3px] bg-[#E5E5E5] overflow-hidden cursor-pointer active:opacity-80 mx-2"
         >
-          <Target className="w-4 h-4 text-[#534AB7]" />
-          <span className="text-[#534AB7] font-medium text-sm">
-            יעדי היום
-          </span>
+          <div
+            className="h-full bg-gradient-to-r from-purple-500 to-[#ff4d6d] transition-all duration-300"
+            style={{ width: `${Math.min(averageProgress, 100)}%` }}
+          />
         </button>
       </div>
 
@@ -77,12 +77,6 @@ export const NewTopBar: React.FC<NewTopBarProps> = ({ title = "חברתי" }) =>
               <span className="text-gray-800 font-medium text-sm">
                 {points}
               </span>
-            </div>
-            <div className="w-20 h-1 bg-[#E5E5E5] rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-purple-500 to-[#ff4d6d] transition-all duration-300"
-                style={{ width: `${Math.min(averageProgress, 100)}%` }}
-              />
             </div>
           </div>
         </button>

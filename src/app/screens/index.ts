@@ -27,3 +27,4 @@ export { PhoneAuthScreen } from './PhoneAuthScreen';
 export { WorkoutActiveScreen } from './WorkoutActiveScreen';
 export { LeaderboardStreak } from './LeaderboardStreak';
 export { DailyGoals } from './DailyGoals';
+export { JoinedActivitiesScreen } from './JoinedActivitiesScreen';

@@ -20,7 +20,8 @@ const DEFAULT_USER_DATA = {
   allergies: '',
   additionalHealthInfo: '',
   goal: 'generalHealth',
-  fitness: 'beginner'
+  fitness: 'beginner',
+  hasSeenTour: false
 };
 const DEFAULT_NUTRITION = { meals: {}, water: 0, archive: [] };
 const DEFAULT_SOCIAL = {

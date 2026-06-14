@@ -174,15 +174,14 @@ export const CharacterScreen = () => {
     };
 
     const SKIN_COLORS: Item[] = [
-        { id: 'normal', name: SKIN_NAMES.normal, image: '', type: 'skin' },
-        { id: 'blue', name: SKIN_NAMES.blue, image: '', type: 'skin' },
-        { id: 'green', name: SKIN_NAMES.green, image: '', type: 'skin' },
-        { id: 'red', name: SKIN_NAMES.red, image: '', type: 'skin' },
-        { id: 'purple', name: SKIN_NAMES.purple, image: '', type: 'skin' },
-        { id: 'orange', name: SKIN_NAMES.orange, image: '', type: 'skin' },
-        { id: 'yellow', name: SKIN_NAMES.yellow, image: '', type: 'skin' },
-        { id: 'pink', name: SKIN_NAMES.pink, image: '', type: 'skin' },
-        { id: 'cyan', name: SKIN_NAMES.cyan, image: '', type: 'skin' },
+        { id: 'normal', name: SKIN_NAMES.normal, image: '', type: 'skin', hex: '#F5CBA7' },
+        { id: 'blue', name: SKIN_NAMES.blue, image: '', type: 'skin', hex: '#3498DB' },
+        { id: 'green', name: SKIN_NAMES.green, image: '', type: 'skin', hex: '#2ECC71' },
+        { id: 'red', name: SKIN_NAMES.red, image: '', type: 'skin', hex: '#E74C3C' },
+        { id: 'purple', name: SKIN_NAMES.purple, image: '', type: 'skin', hex: '#9B59B6' },
+        { id: 'orange', name: SKIN_NAMES.orange, image: '', type: 'skin', hex: '#E67E22' },
+        { id: 'yellow', name: SKIN_NAMES.yellow, image: '', type: 'skin', hex: '#F1C40F' },
+        { id: 'pink', name: SKIN_NAMES.pink, image: '', type: 'skin', hex: '#FF69B4' },
     ];
 
 
@@ -227,12 +226,22 @@ export const CharacterScreen = () => {
         }
     };
 
-    const handleSave = () => {
-        console.log('=== CHARACTER SAVE DEBUG ===');
-        console.log('localState being saved:', localState);
-        console.log('current characterState:', characterState);
-        console.log('==========================');
+    const handleSave = async () => {
         updateCharacterState(localState);
+        
+        // Save selected color to Firestore if we have a user
+        const { getFirebaseFirestore } = await import('../../lib/firebase');
+        const { doc, updateDoc } = await import('firebase/firestore');
+        const db = getFirebaseFirestore();
+        if (db && characterState.currentUser?.uid) {
+            try {
+                const userRef = doc(db, 'users', characterState.currentUser.uid);
+                await updateDoc(userRef, { characterColor: localState.skin });
+            } catch (e) {
+                console.error('Failed to save character color', e);
+            }
+        }
+        
         navigate(-1);
     };
 
@@ -252,23 +261,21 @@ export const CharacterScreen = () => {
     };
 
     return (
-        <MobileContainer className="min-h-screen relative flex flex-col justify-center"
-        >
+        <MobileContainer className="min-h-screen relative flex flex-col justify-center bg-[#F9F9F9]">
 
             {/* Header */}
             <div className="flex items-center justify-between p-6 z-20 mt-4">
                 <button
                     onClick={() => navigate(-1)}
-                    className={`p-3 rounded-full shadow-lg transition-colors ${darkMode ? 'bg-slate-700 hover:bg-slate-600 text-gray-300' : 'bg-white hover:bg-gray-50 text-gray-500'}`}
+                    className="p-3 bg-transparent transition-colors"
                 >
                     <ChevronLeft className={isRTL ? 'rotate-180 text-gray-500' : 'text-gray-500'} size={24} />
                 </button>
-                <h1 className="text-2xl font-black text-foreground dark:text-slate-100">{t('characterDesigner')}</h1>
+                <h1 className="text-xl font-black text-gray-900">מעצב דמות</h1>
                 <button
                     onClick={handleSave}
-                    className="px-6 py-3 bg-primary text-primary-foreground rounded-full shadow-lg hover:bg-primary/90 transition-colors font-black text-sm flex items-center gap-2 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
+                    className="px-6 py-2 bg-[#F4F0FF] text-[#534AB7] rounded-[20px] font-bold text-sm flex items-center gap-2 transition-colors"
                 >
-                    <Check size={20} />
                     <span>{t('characterSave')}</span>
                 </button>
             </div>
@@ -291,19 +298,18 @@ export const CharacterScreen = () => {
             </div>
 
             {/* Tabs */}
-            <div className={`rounded-t-[4rem] p-8 pb-14 min-h-[350px] ${darkMode ? 'bg-slate-700' : 'bg-white'} mt-0`}>
+            <div className={`rounded-t-[4rem] p-8 pb-14 min-h-[350px] bg-white mt-0`}>
                 <div className="flex justify-between mb-8 overflow-x-auto no-scrollbar gap-3 pb-2">
                     {tabs.map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`flex flex-col items-center p-4 rounded-[2rem] transition-all min-w-[80px] ${activeTab === tab.id
-                                ? 'bg-primary text-primary-foreground scale-110 dark:bg-slate-700 dark:text-slate-100'
-                                : `${darkMode ? 'bg-slate-600 text-gray-400' : 'bg-gray-50 text-gray-400'} opacity-60`
+                            className={`flex flex-col items-center p-2 transition-all min-w-[80px] ${activeTab === tab.id
+                                ? 'text-[#534AB7] border-b-2 border-[#534AB7]'
+                                : 'text-gray-400'
                                 }`}
                         >
-                            <tab.icon size={28} />
-                            <span className="text-[11px] mt-2 font-black tracking-tight whitespace-nowrap uppercase">{tab.label}</span>
+                            <span className="text-[13px] font-bold tracking-tight whitespace-nowrap">{tab.label}</span>
                         </button>
                     ))}
                 </div>
@@ -327,40 +333,34 @@ export const CharacterScreen = () => {
                                 </p>
                             </motion.div>
                         ) : (
-                            <div className="grid grid-cols-4 gap-4">
+                            <div className="grid grid-cols-4 gap-[12px]">
                                 {filteredItems.map((item) => {
                                     const isEquipped = localState[item.type] === item.id;
                                     return (
-                                        <motion.div
-                                            key={item.id}
-                                            layout
-                                            whileTap={{ scale: 0.93 }}
-                                            onClick={() => handleSelect(item)}
-                                            className={`relative aspect-square rounded-2xl border-2 flex flex-col items-center justify-center p-2 cursor-pointer transition-all ${isEquipped
-                                                ? 'border-primary bg-primary/10 dark:border-slate-500 dark:bg-slate-700/50'
-                                                : `${darkMode ? 'border-slate-600 bg-slate-700 hover:border-slate-500' : 'border-slate-100 bg-slate-50 hover:border-pink-200'}`
-                                                }`}
-                                        >
-                                            {item.type === 'skin' ? (
-                                                <div className={`w-10 h-10 rounded-full shadow-inner border-2 border-white ${SKIN_UI_COLORS[item.id] || 'bg-gray-200'}`} />
-                                            ) : (
-                                                <div className="w-10 h-10 flex items-center justify-center">
-                                                    <img src={item.image} alt="" className="max-w-full max-h-full object-contain" />
-                                                </div>
-                                            )}
-                                            <p className={`text-[9px] font-bold mt-2 text-center leading-tight ${darkMode ? 'text-slate-300' : 'text-gray-500'}`}>{item.name}</p>
+                                        <div className="flex flex-col items-center">
+                                            <motion.div
+                                                key={item.id}
+                                                layout
+                                                whileTap={{ scale: 0.93 }}
+                                                onClick={() => handleSelect(item)}
+                                                className={`relative w-[44px] h-[44px] rounded-full flex flex-col items-center justify-center cursor-pointer transition-all ${isEquipped && item.type === 'skin'
+                                                    ? 'border-2 border-[#534AB7] shadow-[0_0_0_3px_#F4F0FF]'
+                                                    : isEquipped
+                                                    ? 'border-2 border-[#534AB7]'
+                                                    : 'border-2 border-transparent'
+                                                    }`}
+                                            >
+                                                {item.type === 'skin' ? (
+                                                    <div className="w-10 h-10 rounded-full" style={{ background: (item as any).hex || '#F5CBA7' }} />
+                                                ) : (
+                                                    <div className="w-10 h-10 flex items-center justify-center">
+                                                        <img src={item.image} alt="" className="max-w-full max-h-full object-contain" />
+                                                    </div>
+                                                )}
+                                            </motion.div>
+                                            <p className="text-[11px] font-medium mt-1 text-center leading-tight text-gray-600">{item.name}</p>
+                                        </div>
 
-                                            {/* Equipped badge */}
-                                            {isEquipped && (
-                                                <motion.div
-                                                    initial={{ scale: 0 }}
-                                                    animate={{ scale: 1 }}
-                                                    className="absolute -top-1 -right-1 bg-primary rounded-full p-1 shadow-sm dark:bg-slate-600"
-                                                >
-                                                    <Check size={8} className="text-primary-foreground dark:text-slate-100" />
-                                                </motion.div>
-                                            )}
-                                        </motion.div>
                                     );
                                 })}
                             </div>

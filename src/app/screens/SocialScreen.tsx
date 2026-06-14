@@ -5,17 +5,20 @@ import CompetitionsSheet from '../components/CompetitionsSheet';
 import ActivitiesSheet from '../components/ActivitiesSheet';
 import LeaderboardSheet from '../components/LeaderboardSheet';
 import { MobileContainer } from '../components/MobileContainer';
-import { Trophy, Activity, Flame } from 'lucide-react';
+import { Trophy, Activity, Flame, Calendar } from 'lucide-react';
+import { useNavigate } from 'react-router';
 
 export const SocialScreen = () => {
   const [activeSheet, setActiveSheet] = useState<'competitions' | 'activities' | 'leaderboard' | null>(null);
+  const navigate = useNavigate();
 
   const closeSheet = () => setActiveSheet(null);
 
   const buttons = [
-    { id: 'competitions' as const, icon: Trophy, label: 'תחרויות', emoji: '🏆' },
-    { id: 'activities' as const, icon: Activity, label: 'פעילויות', emoji: '🏃' },
-    { id: 'leaderboard' as const, icon: Flame, label: 'מובילים', emoji: '🔥' },
+    { id: 'competitions', icon: Trophy, label: 'תחרויות', emoji: '🏆', action: () => setActiveSheet('competitions') },
+    { id: 'activities', icon: Activity, label: 'פעילויות', emoji: '🏃', action: () => setActiveSheet('activities') },
+    { id: 'leaderboard', icon: Flame, label: 'מובילים', emoji: '🔥', action: () => setActiveSheet('leaderboard') },
+    { id: 'my-activities', icon: Calendar, label: 'הפעילויות שלי', emoji: '📅', action: () => navigate('/joined-activities') },
   ];
 
   return (
@@ -30,14 +33,14 @@ export const SocialScreen = () => {
         
         {/* Floating Buttons Below Map */}
         <div className="p-4">
-          <div className="flex items-center justify-center gap-3">
-            {buttons.map(({ id, icon: Icon, label, emoji }) => {
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {buttons.map(({ id, icon: Icon, label, emoji, action }) => {
               const isActive = activeSheet === id;
               
               return (
                 <button
                   key={id}
-                  onClick={() => setActiveSheet(id)}
+                  onClick={action}
                   className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
                     isActive
                       ? 'bg-gradient-to-r from-purple-500 to-[#ff4d6d] text-white shadow-md'
