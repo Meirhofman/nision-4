@@ -112,7 +112,7 @@ export const DailyGoals = () => {
                       e.stopPropagation();
                       setEditingGoal(goal.id);
                     }}
-                    className="absolute top-5 left-5 opacity-0 hover:opacity-100 transition-opacity duration-200"
+                    className="absolute top-5 left-5 transition-opacity duration-200"
                   >
                     <Edit2 size={18} color="#A78BFA" />
                   </button>

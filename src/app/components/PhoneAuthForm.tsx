@@ -27,7 +27,8 @@ export const PhoneAuthForm: React.FC<PhoneAuthFormProps> = ({ darkMode = false, 
   const { setCurrentUser, persistState } = useApp();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState('');
-  const [step, setStep] = useState<'phone' | 'otp'>('phone');
+  const [username, setUsername] = useState('');
+  const [step, setStep] = useState<'phone' | 'otp' | 'username'>('phone');
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,7 @@ export const PhoneAuthForm: React.FC<PhoneAuthFormProps> = ({ darkMode = false, 
   const [recaptchaReady, setRecaptchaReady] = useState(false);
   const [smsSentTo, setSmsSentTo] = useState('');
   const [needsFirebaseSetup, setNeedsFirebaseSetup] = useState(false);
+  const [verifiedUser, setVerifiedUser] = useState<any>(null);
 
   useEffect(() => {
     if (timer <= 0) return;
@@ -205,14 +207,21 @@ export const PhoneAuthForm: React.FC<PhoneAuthFormProps> = ({ darkMode = false, 
     try {
       const result = await confirmationResult.confirm(otp);
       const user = result.user;
-      const formattedPhone = normalizePhoneNumber(phoneNumber);
-      completeLogin({
-        uid: user.uid,
-        displayName: user.displayName || user.phoneNumber || 'משתמש',
-        email: user.email,
-        photoURL: user.photoURL,
-        phoneNumber: user.phoneNumber || formattedPhone,
-      });
+      setVerifiedUser(user);
+      
+      // Check if user has displayName, if not ask for username
+      if (!user.displayName) {
+        setStep('username');
+      } else {
+        const formattedPhone = normalizePhoneNumber(phoneNumber);
+        completeLogin({
+          uid: user.uid,
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          phoneNumber: user.phoneNumber || formattedPhone,
+        });
+      }
     } catch (err: unknown) {
       setNeedsFirebaseSetup(isConfigurationNotFoundError(err));
       setError(mapPhoneAuthError(err));
@@ -221,9 +230,32 @@ export const PhoneAuthForm: React.FC<PhoneAuthFormProps> = ({ darkMode = false, 
     }
   };
 
+  const handleUsernameSubmit = () => {
+    if (!username.trim()) {
+      setError('נא להזין שם משתמש');
+      return;
+    }
+    
+    if (!verifiedUser) {
+      setError('שגיאה באימות. נסה שוב.');
+      return;
+    }
+
+    const formattedPhone = normalizePhoneNumber(phoneNumber);
+    completeLogin({
+      uid: verifiedUser.uid,
+      displayName: username.trim(),
+      email: verifiedUser.email,
+      photoURL: verifiedUser.photoURL,
+      phoneNumber: verifiedUser.phoneNumber || formattedPhone,
+    });
+  };
+
   const handleBackToPhone = () => {
     setStep('phone');
     setOtp('');
+    setUsername('');
+    setVerifiedUser(null);
     setConfirmationResult(null);
     setSmsSentTo('');
     setError('');
@@ -254,7 +286,7 @@ export const PhoneAuthForm: React.FC<PhoneAuthFormProps> = ({ darkMode = false, 
         {PHONE_AUTH_BUILD}
       </p>
 
-      {step === 'phone' ? (
+      {step === 'phone' && (
         <>
           <div className="relative">
             <input
@@ -284,7 +316,9 @@ export const PhoneAuthForm: React.FC<PhoneAuthFormProps> = ({ darkMode = false, 
             {loading ? 'שולח SMS...' : 'שלח קוד SMS לטלפון'}
           </button>
         </>
-      ) : (
+      )}
+
+      {step === 'otp' && (
         <>
           <div
             className={`p-4 rounded-xl border text-center ${
@@ -338,6 +372,49 @@ export const PhoneAuthForm: React.FC<PhoneAuthFormProps> = ({ darkMode = false, 
           >
             <RefreshCw size={14} />
             חזרה / שלח שוב
+          </button>
+        </>
+      )}
+
+      {step === 'username' && (
+        <>
+          <div className="text-center mb-4">
+            <p className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+              בחר שם משתמש
+            </p>
+            <p className={`text-sm ${darkMode ? 'text-slate-400' : 'text-gray-600'}`}>
+              השם יופיע בפרופיל שלך
+            </p>
+          </div>
+
+          <input
+            type="text"
+            placeholder="שם משתמש"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleUsernameSubmit()}
+            className={inputClass}
+          />
+
+          <button
+            type="button"
+            onClick={handleUsernameSubmit}
+            disabled={loading || !username.trim()}
+            className="w-full py-4 text-lg font-black rounded-2xl bg-pink-500 text-white disabled:opacity-50 hover:bg-pink-600 touch-manipulation"
+          >
+            {loading ? 'שומר...' : 'המשך'}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleBackToPhone}
+            disabled={loading}
+            className={`w-full py-2 text-sm font-bold flex items-center justify-center gap-2 ${
+              darkMode ? 'text-slate-400' : 'text-gray-600'
+            }`}
+          >
+            <RefreshCw size={14} />
+            חזרה
           </button>
         </>
       )}

@@ -196,8 +196,8 @@ export const SummaryScreen = () => {
        {/* Header */}
        <div className="p-6 pt-12 flex items-center justify-between bg-white/50 backdrop-blur-sm z-10 sticky top-0">
          <h1 className="text-2xl font-bold text-gray-800">{t('activitySummary')}</h1>
-         <button 
-           onClick={() => navigate(-1)} 
+         <button
+           onClick={() => navigate('/main')}
            className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-gray-600 hover:bg-gray-50 border border-gray-100"
          >
            <ChevronLeft size={24} className={isRTL ? "rotate-180" : ""} />

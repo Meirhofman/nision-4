@@ -89,8 +89,8 @@ export const MealHistoryScreen = () => {
     <MobileContainer className="min-h-screen flex flex-col relative">
       {/* Header */}
       <div className="p-6 pb-2 pt-12 flex items-center relative justify-center bg-white/50 backdrop-blur-sm z-10">
-        <button 
-          onClick={() => navigate(-1)} 
+        <button
+          onClick={() => navigate('/main')}
           className="absolute left-6 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-gray-600 hover:bg-gray-50"
         >
           <ChevronLeft size={24} />

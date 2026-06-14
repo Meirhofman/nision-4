@@ -86,10 +86,14 @@ function SpeechBubble({ text }: { text: string }) {
 }
 
 export const MainScreen = () => {
-  const { characterState, currentUser, userData } = useApp();
+  const { characterState, currentUser, userData, language, t, darkMode } = useApp();
   const navigate = useNavigate();
 
   const displayName = userData?.displayName || currentUser?.displayName || 'מאיר';
+
+  // Calculate daily progress percentage
+  const dailyProgress = userData?.dailyProgress || 0;
+  const progressPercentage = Math.min(100, Math.round((dailyProgress / (userData?.dailyGoals?.total || 100)) * 100));
 
   React.useEffect(() => {
     const hasBypassFlag = localStorage.getItem('hasCompletedQuestionnaire_v1');
@@ -100,11 +104,14 @@ export const MainScreen = () => {
     }
   }, [userData, navigate]);
 
+  const greeting = language === 'en' ? `Hello ${displayName}!` : `שלום ${displayName}!`;
+  const subGreeting = language === 'en' ? 'Ready for your daily goals?' : 'מוכן ליעדים היומיים שלך?';
+
   return (
-    <MobileContainer className="min-h-[100dvh] overflow-hidden flex flex-col bg-[#F9F9F9]">
+    <MobileContainer className={`min-h-[100dvh] overflow-hidden flex flex-col ${darkMode ? 'bg-slate-900' : 'bg-[#F9F9F9]'}`}>
       <div className="flex flex-col items-center justify-start h-full px-5 pt-8 pb-6">
         {/* Header */}
-        <div className="w-full flex justify-between items-center mb-8">
+        <div className="w-full flex justify-between items-center mb-6">
           <div className="flex items-center gap-3">
             <UserAvatar
               photoURL={currentUser?.photoURL}
@@ -112,20 +119,30 @@ export const MainScreen = () => {
               size={40}
             />
             <div>
-              <h2 className="text-[20px] font-medium text-[#1a1a1a]">
-                שלום {displayName}!
+              <h2 className={`text-[20px] font-medium ${darkMode ? 'text-white' : 'text-[#1a1a1a]'}`}>
+                {greeting}
               </h2>
-              <p className="text-[13px] text-[#999999]">מוכן ליעדים היומיים שלך?</p>
+              <p className={`text-[13px] ${darkMode ? 'text-gray-400' : 'text-[#999999]'}`}>{subGreeting}</p>
             </div>
           </div>
 
           <button
             onClick={() => navigate('/settings')}
-            className="w-10 h-10 rounded-full bg-white flex items-center justify-center"
+            className={`w-10 h-10 rounded-full flex items-center justify-center ${darkMode ? 'bg-slate-800' : 'bg-white'}`}
             style={{ border: '0.5px solid #F0F0F0' }}
           >
-            <Settings className="w-5 h-5 text-gray-600" />
+            <Settings className={`w-5 h-5 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`} />
           </button>
+        </div>
+
+        {/* Daily Progress Bar */}
+        <div className="w-full mb-8">
+          <div className={`h-1 rounded-[2px] overflow-hidden ${darkMode ? 'bg-slate-700' : 'bg-[#E5E5E5]'}`}>
+            <div
+              className="h-full rounded-[2px] bg-gradient-to-r from-[#534AB7] to-[#A78BFA] transition-all duration-500"
+              style={{ width: `${progressPercentage}%` }}
+            />
+          </div>
         </div>
 
         {/* Character + בועת דיבור */}
@@ -133,7 +150,7 @@ export const MainScreen = () => {
           className="flex flex-col items-center mb-10 cursor-pointer"
           onClick={() => navigate('/character')}
         >
-          <SpeechBubble text="לחצו עליי ותגלו ✨" />
+          <SpeechBubble text={language === 'en' ? 'Click me and discover! ✨' : 'לחצו עליי ותגלו ✨'} />
 
           <div className="w-[200px] h-[200px]">
             <Character

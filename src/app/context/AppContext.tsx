@@ -10,7 +10,8 @@ import {
   updateLoginStreak,
 } from '../../lib/storage';
 import { signOut as authSignOut, handleRedirectResult } from '../../lib/auth';
-import { listenToAuthState } from '../../lib/firebase';
+import { listenToAuthState, getFirebaseFirestore } from '../../lib/firebase';
+import { onSnapshot, doc } from 'firebase/firestore';
 
 const DEFAULT_USER_DATA = { 
   age: 14, 
@@ -217,6 +218,32 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
     return unsubscribe;
   }, []);
+
+  // Real-time Firestore listener for daily progress
+  useEffect(() => {
+    if (!currentUser?.uid) return;
+
+    const db = getFirebaseFirestore();
+    if (!db) return;
+
+    const today = getTodayString();
+    const progressRef = doc(db, 'users', currentUser.uid, 'dailyProgress', today);
+
+    const unsubscribe = onSnapshot(progressRef, (docSnapshot: any) => {
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        setDailyProgress((prev: any) => ({
+          ...prev,
+          ...data,
+          date: today
+        }));
+      }
+    }, (error: any) => {
+      console.error('[AppContext] Error listening to daily progress:', error);
+    });
+
+    return () => unsubscribe();
+  }, [currentUser?.uid]);
 
   const setDarkMode = useCallback((v: boolean) => setDarkModeState(v), []);
 

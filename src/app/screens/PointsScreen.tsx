@@ -34,7 +34,7 @@ export const PointsScreen = () => {
         >
             {/* Header */}
             <div className="p-6 pb-2 flex items-center justify-between">
-                <button onClick={() => navigate(-1)} className="p-2 bg-gray-100 rounded-full text-gray-600">
+                <button onClick={() => navigate('/main')} className="p-2 bg-gray-100 rounded-full text-gray-600">
                     <ArrowLeft size={24} className={isRTL ? "rotate-180" : ""} />
                 </button>
                 <span className="text-gray-800 font-bold text-lg">{t('pointsTracking')}</span>

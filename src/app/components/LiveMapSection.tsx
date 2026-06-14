@@ -1,4 +1,4 @@
-import { Filter } from 'lucide-react';
+import { Filter, X } from 'lucide-react';
 import { useState } from 'react';
 import { UserAvatar } from './UserAvatar';
 
@@ -15,8 +15,24 @@ interface LiveMapSectionProps {
 
 export default function LiveMapSection({ isDarkMode = false }: LiveMapSectionProps) {
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const [filterActivity, setFilterActivity] = useState<string>('all');
+  const [filterActive, setFilterActive] = useState<boolean | null>(null);
 
   const dark = isDarkMode;
+
+  const filteredUsers = liveUsers.filter(user => {
+    if (filterActivity !== 'all' && user.activityEn !== filterActivity && user.activity !== filterActivity) return false;
+    if (filterActive !== null && user.isActive !== filterActive) return false;
+    return true;
+  });
+
+  const activityOptions = [
+    { value: 'all', label: 'הכל', labelEn: 'All' },
+    { value: 'Running', label: 'ריצה', labelEn: 'Running' },
+    { value: 'Cycling', label: 'רכיבה', labelEn: 'Cycling' },
+    { value: 'Gym', label: 'כושר', labelEn: 'Gym' },
+  ];
 
   return (
     <div className="flex-1 relative w-full h-full overflow-hidden">
@@ -81,11 +97,95 @@ export default function LiveMapSection({ isDarkMode = false }: LiveMapSectionPro
             backdropFilter: 'blur(12px)',
             border: dark ? '1px solid rgba(167,139,250,0.3)' : '1px solid rgba(124,58,237,0.15)',
           }}
+          onClick={() => setShowFilterMenu(!showFilterMenu)}
         >
           <Filter className={`w-5 h-5 ${dark ? 'text-purple-300' : 'text-gray-700'}`} />
         </button>
 
-        {liveUsers.map((user) => (
+        {showFilterMenu && (
+          <div
+            className="absolute top-16 right-4 z-20 w-64 rounded-2xl shadow-2xl p-4"
+            style={{
+              background: dark ? 'rgba(35,35,74,0.97)' : 'rgba(255,255,255,0.97)',
+              backdropFilter: 'blur(16px)',
+              border: dark ? '1px solid rgba(167,139,250,0.25)' : '1px solid rgba(124,58,237,0.12)',
+            }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <span className={`font-bold ${dark ? 'text-white' : 'text-gray-900'}`}>סינון</span>
+              <button onClick={() => setShowFilterMenu(false)}>
+                <X className={`w-4 h-4 ${dark ? 'text-gray-400' : 'text-gray-500'}`} />
+              </button>
+            </div>
+
+            <div className="mb-4">
+              <label className={`text-xs font-bold mb-2 block ${dark ? 'text-gray-400' : 'text-gray-600'}`}>סוג פעילות</label>
+              <div className="flex flex-wrap gap-2">
+                {activityOptions.map(option => (
+                  <button
+                    key={option.value}
+                    onClick={() => setFilterActivity(option.value)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                      filterActivity === option.value
+                        ? 'bg-gradient-to-r from-purple-500 to-[#ff4d6d] text-white'
+                        : dark ? 'bg-slate-700 text-gray-300' : 'bg-gray-100 text-gray-700'
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label className={`text-xs font-bold mb-2 block ${dark ? 'text-gray-400' : 'text-gray-600'}`}>סטטוס</label>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setFilterActive(null)}
+                  className={`flex-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    filterActive === null
+                      ? 'bg-gradient-to-r from-purple-500 to-[#ff4d6d] text-white'
+                      : dark ? 'bg-slate-700 text-gray-300' : 'bg-gray-100 text-gray-700'
+                  }`}
+                >
+                  הכל
+                </button>
+                <button
+                  onClick={() => setFilterActive(true)}
+                  className={`flex-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    filterActive === true
+                      ? 'bg-gradient-to-r from-purple-500 to-[#ff4d6d] text-white'
+                      : dark ? 'bg-slate-700 text-gray-300' : 'bg-gray-100 text-gray-700'
+                  }`}
+                >
+                  פעיל
+                </button>
+                <button
+                  onClick={() => setFilterActive(false)}
+                  className={`flex-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    filterActive === false
+                      ? 'bg-gradient-to-r from-purple-500 to-[#ff4d6d] text-white'
+                      : dark ? 'bg-slate-700 text-gray-300' : 'bg-gray-100 text-gray-700'
+                  }`}
+                >
+                  לא פעיל
+                </button>
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                setFilterActivity('all');
+                setFilterActive(null);
+              }}
+              className={`w-full py-2 rounded-full text-xs font-bold ${dark ? 'bg-slate-700 text-gray-300' : 'bg-gray-100 text-gray-700'}`}
+            >
+              איפוס סינון
+            </button>
+          </div>
+        )}
+
+        {filteredUsers.map((user) => (
           <div
             key={user.id}
             className="absolute cursor-pointer"

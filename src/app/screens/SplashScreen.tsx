@@ -37,7 +37,7 @@ export const SplashScreen = () => {
   }, [navigate]);
 
   return (
-    <MobileContainer className="flex flex-col items-center justify-center relative bg-[#ffffff]">
+    <MobileContainer className="flex flex-col items-center justify-center relative bg-[#ffffff] h-screen">
       <AnimatePresence mode="wait">
         {isVisible && (
           <motion.div
@@ -45,7 +45,7 @@ export const SplashScreen = () => {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="flex flex-col items-center justify-center"
+            className="flex flex-col items-center justify-center w-full h-full"
           >
             {/* Logo */}
             <img 

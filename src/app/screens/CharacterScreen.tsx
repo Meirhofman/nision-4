@@ -174,14 +174,14 @@ export const CharacterScreen = () => {
     };
 
     const SKIN_COLORS: Item[] = [
-        { id: 'normal', name: SKIN_NAMES.normal, image: '', type: 'skin', hex: '#F5CBA7' },
-        { id: 'blue', name: SKIN_NAMES.blue, image: '', type: 'skin', hex: '#3498DB' },
-        { id: 'green', name: SKIN_NAMES.green, image: '', type: 'skin', hex: '#2ECC71' },
-        { id: 'red', name: SKIN_NAMES.red, image: '', type: 'skin', hex: '#E74C3C' },
-        { id: 'purple', name: SKIN_NAMES.purple, image: '', type: 'skin', hex: '#9B59B6' },
-        { id: 'orange', name: SKIN_NAMES.orange, image: '', type: 'skin', hex: '#E67E22' },
-        { id: 'yellow', name: SKIN_NAMES.yellow, image: '', type: 'skin', hex: '#F1C40F' },
-        { id: 'pink', name: SKIN_NAMES.pink, image: '', type: 'skin', hex: '#FF69B4' },
+        { id: 'normal', name: SKIN_NAMES.normal, image: '', type: 'skin' },
+        { id: 'blue', name: SKIN_NAMES.blue, image: '', type: 'skin' },
+        { id: 'green', name: SKIN_NAMES.green, image: '', type: 'skin' },
+        { id: 'red', name: SKIN_NAMES.red, image: '', type: 'skin' },
+        { id: 'purple', name: SKIN_NAMES.purple, image: '', type: 'skin' },
+        { id: 'orange', name: SKIN_NAMES.orange, image: '', type: 'skin' },
+        { id: 'yellow', name: SKIN_NAMES.yellow, image: '', type: 'skin' },
+        { id: 'pink', name: SKIN_NAMES.pink, image: '', type: 'skin' },
     ];
 
 
@@ -242,10 +242,10 @@ export const CharacterScreen = () => {
             }
         }
         
-        navigate(-1);
+        navigate('/main');
     };
 
-    const filteredItems = activeTab === 'skin' ? SKIN_COLORS : CLOTHING_ITEMS.filter(item => item.type === activeTab);
+    const filteredItems = activeTab === 'skin' ? SKIN_COLORS : CLOTHING_ITEMS.filter(item => item.type === activeTab && item.type !== 'set');
 
     // Map skin IDs to actual colors for the UI circles
     const SKIN_UI_COLORS: Record<string, string> = {
@@ -266,7 +266,7 @@ export const CharacterScreen = () => {
             {/* Header */}
             <div className="flex items-center justify-between p-6 z-20 mt-4">
                 <button
-                    onClick={() => navigate(-1)}
+                    onClick={() => navigate('/main')}
                     className="p-3 bg-transparent transition-colors"
                 >
                     <ChevronLeft className={isRTL ? 'rotate-180 text-gray-500' : 'text-gray-500'} size={24} />

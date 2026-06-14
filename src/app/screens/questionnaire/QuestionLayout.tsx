@@ -23,7 +23,7 @@ export const QuestionLayout = ({ title, children, onNext, canNext = false, showB
       <div className="flex-1 flex flex-col w-full p-6 h-full">
         <div className="flex items-center justify-between mb-8 pt-4">
           {showBack ? (
-            <button onClick={() => navigate(-1)} className="p-2 rounded-full hover:bg-black/5">
+            <button onClick={() => navigate('/main')} className="p-2 rounded-full hover:bg-black/5">
               <ArrowLeft className={isRTL ? "rotate-180" : ""} size={24} />
             </button>
           ) : <div className="w-10" />}

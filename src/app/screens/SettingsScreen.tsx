@@ -167,12 +167,21 @@ export const SettingsScreen = () => {
         }
     };
 
+    const handleLogout = async () => {
+        try {
+            logout();
+            navigate('/login');
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
+    };
+
     return (
         <MobileContainer className={`min-h-screen relative flex flex-col overflow-y-auto ${darkMode ? 'bg-background text-foreground' : 'bg-[#F9F9F9] text-slate-900'}`}>
 
             {/* Header */}
             <div className="p-6 pt-12 flex items-center justify-between sticky top-0 z-10 backdrop-blur-sm">
-                <button onClick={() => navigate(-1)} className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm ${darkMode ? 'bg-card text-card-foreground' : 'bg-white text-gray-600'}`}>
+                <button onClick={() => navigate('/main')} className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm ${darkMode ? 'bg-card text-card-foreground' : 'bg-white text-gray-600'}`}>
                     <ArrowLeft size={20} />
                 </button>
                 <h1 className={`text-xl font-bold ${darkMode ? 'text-foreground' : 'text-gray-900'}`}>{t('settings')}</h1>
@@ -520,7 +529,7 @@ export const SettingsScreen = () => {
                                     }
                                 }
                             }} 
-                            className="data-[state=checked]:bg-[#534AB7]"
+                            className="data-[state=checked]:bg-[#22C55E]"
                         />
                     </div>
                 </div>
@@ -758,10 +767,7 @@ export const SettingsScreen = () => {
                                         <p className={darkMode ? 'text-slate-400' : 'text-gray-500'}>{t('logoutConfirm')}</p>
                                         <div className="flex flex-col gap-3 pt-4">
                                             <button
-                                                onClick={() => {
-                                                    logout();
-                                                    navigate('/login');
-                                                }}
+                                                onClick={handleLogout}
                                                 className="w-full py-4 bg-red-500 text-white rounded-2xl font-bold shadow-lg shadow-red-200"
                                             >
                                                 {t('logOut')}

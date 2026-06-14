@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router';
 import { MobileContainer } from '../components/MobileContainer';
 import { useApp } from '../context/AppContext';
 import { NewTopBar } from '../components/NewTopBar';
-import { ChevronDown, Clock, Footprints, MapPin, Play, History, Calendar, Share2, BarChart2, ChevronUp, ChevronLeft, ChevronRight, Star, X, Sparkles } from 'lucide-react';
+import { ChevronDown, Clock, Footprints, MapPin, Play, History, Calendar, Share2, BarChart2, ChevronUp, ChevronLeft, ChevronRight, Star, X, Sparkles, Users } from 'lucide-react';
 import { Button } from '../components/ui';
 import { showToast } from '../components/ui/toast';
+import { getFirebaseFirestore } from '../../lib/firebase';
+import { doc, getDoc, updateDoc, arrayUnion, collection, getDocs, query, where } from 'firebase/firestore';
 
 const ProgressStar = ({ percentage }: { percentage: number }) => {
   const [currentFill, setCurrentFill] = useState(0);
@@ -76,7 +78,9 @@ export const WorkoutsScreen = () => {
   const [showWorkoutStartModal, setShowWorkoutStartModal] = useState(false);
   const [showWorkoutEntryModal, setShowWorkoutEntryModal] = useState(false);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
-  const [showAIModal, setShowAIModal] = useState(false);
+  const [showJoinModal, setShowJoinModal] = useState(false);
+  const [availableWorkouts, setAvailableWorkouts] = useState<any[]>([]);
+  const [loadingWorkouts, setLoadingWorkouts] = useState(false);
   const [workoutForm, setWorkoutForm] = useState({
     type: suggestedType,
     duration: '',
@@ -98,6 +102,56 @@ export const WorkoutsScreen = () => {
       setShowTutorial(true);
     }
   }, []);
+
+  // Fetch available workouts when join modal opens
+  const fetchAvailableWorkouts = async () => {
+    setLoadingWorkouts(true);
+    try {
+      const db = getFirebaseFirestore();
+      if (!db) {
+        showToast('Firebase not configured', 'error');
+        return;
+      }
+
+      const workoutsRef = collection(db, 'workouts');
+      const snapshot = await getDocs(workoutsRef);
+      const workouts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setAvailableWorkouts(workouts);
+    } catch (error) {
+      console.error('Error fetching workouts:', error);
+      showToast('Failed to load workouts', 'error');
+    } finally {
+      setLoadingWorkouts(false);
+    }
+  };
+
+  const handleJoinWorkout = async (workoutId: string) => {
+    try {
+      const db = getFirebaseFirestore();
+      if (!db || !userData?.uid) {
+        showToast('Firebase not configured or user not logged in', 'error');
+        return;
+      }
+
+      // Add user to the workout's participants
+      const workoutRef = doc(db, 'workouts', workoutId);
+      await updateDoc(workoutRef, {
+        participants: arrayUnion(userData.uid)
+      });
+
+      // Add workout to user's joined workouts
+      const userRef = doc(db, 'users', userData.uid);
+      await updateDoc(userRef, {
+        joinedWorkouts: arrayUnion(workoutId)
+      });
+
+      showToast('Successfully joined workout!', 'success');
+      setShowJoinModal(false);
+    } catch (error) {
+      console.error('Error joining workout:', error);
+      showToast('Failed to join workout', 'error');
+    }
+  };
 
   const tutorialSteps = [
     {
@@ -128,16 +182,6 @@ export const WorkoutsScreen = () => {
         "קבל תזכורת אוטומטית",
         "נהל אימונים מתוכננים",
         "עקוב אחר היעדים שלך"
-      ]
-    },
-    {
-      title: "עוזר AI אישי 🤖",
-      description: "קבל המלצות אימונים מותאמות אישית מהעוזר המתקדם שלנו.",
-      bullets: [
-        "המלצות לפי המטרות שלך",
-        "תכנונים מותאמים לגיל ומשקל",
-        "מגוון סוגי אימונים",
-        "שיפור ביצועים מתמשך"
       ]
     }
   ];
@@ -227,17 +271,17 @@ export const WorkoutsScreen = () => {
 
         {/* Stats Row */}
         <div className="grid grid-cols-3 gap-3 w-full">
-          <div className="bg-[#F4F0FF] rounded-3xl p-4 flex flex-col items-center justify-center space-y-1">
+          <div className="bg-[#F9F9F9] rounded-[12px] p-4 flex flex-col items-center justify-center space-y-1 border-[0.5px] border-[#F0F0F0]">
             <Clock size={24} className="text-[#534AB7] mb-1" />
             <span className={`text-xl font-black tracking-tighter text-[#534AB7]`}>24m</span>
             <span className={`text-[10px] font-black uppercase text-[#534AB7] opacity-80`}>זמן פעילות</span>
           </div>
-          <div className="bg-[#F4F0FF] rounded-3xl p-4 flex flex-col items-center justify-center space-y-1">
+          <div className="bg-[#F9F9F9] rounded-[12px] p-4 flex flex-col items-center justify-center space-y-1 border-[0.5px] border-[#F0F0F0]">
             <Footprints size={24} className="text-[#534AB7] mb-1" />
             <span className={`text-xl font-black tracking-tighter text-[#534AB7]`}>5,420</span>
             <span className={`text-[10px] font-black uppercase text-[#534AB7] opacity-80`}>צעדים</span>
           </div>
-          <div className="bg-[#F4F0FF] rounded-3xl p-4 flex flex-col items-center justify-center space-y-1">
+          <div className="bg-[#F9F9F9] rounded-[12px] p-4 flex flex-col items-center justify-center space-y-1 border-[0.5px] border-[#F0F0F0]">
             <MapPin size={24} className="text-[#534AB7] mb-1" />
             <span className={`text-xl font-black tracking-tighter text-[#534AB7]`}>3.2</span>
             <span className={`text-[10px] font-black uppercase text-[#534AB7] opacity-80`}>מרחק (ק״מ)</span>
@@ -245,15 +289,13 @@ export const WorkoutsScreen = () => {
         </div>
 
         {/* Start Button */}
-        <Button
+        <button
           onClick={() => setShowWorkoutStartModal(true)}
-          className="w-full h-20 bg-white border-[0.5px] border-[#F0F0F0] text-[#2d1f60] rounded-[16px] flex flex-row items-center justify-center gap-3 active:scale-95 transition-all"
+          className="w-full h-20 bg-[#534AB7] text-white rounded-[20px] flex flex-row items-center justify-center gap-3 active:scale-95 transition-all"
         >
-          <div className="bg-[#534AB7] p-2 rounded-full text-white">
-            <Play fill="currentColor" size={24} />
-          </div>
+          <Play fill="currentColor" size={24} />
           <span className="text-2xl font-black tracking-tight">התחל אימון {workoutType}</span>
-        </Button>
+        </button>
 
         {/* Grid Options */}
         <div className="grid grid-cols-2 gap-3 w-full pb-20">
@@ -268,6 +310,16 @@ export const WorkoutsScreen = () => {
             <Calendar className="text-[#534AB7] group-hover:rotate-12 transition-transform" size={28} />
             <span className="text-xs font-black text-[#2d1f60]">קבע אימון</span>
           </button>
+          <button 
+            onClick={() => {
+              fetchAvailableWorkouts();
+              setShowJoinModal(true);
+            }}
+            className="bg-white border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 hover:bg-gray-50 transition-all group"
+          >
+            <Users className="text-[#534AB7] group-hover:rotate-12 transition-transform" size={28} />
+            <span className="text-xs font-black text-[#2d1f60]">הצטרף לאימון</span>
+          </button>
           <button onClick={handleShare} className="bg-white border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 hover:bg-gray-50 transition-all group" title={t('shareWithFriends')}>
             <Share2 className="text-[#534AB7] group-hover:rotate-12 transition-transform" size={28} />
             <span className="text-xs font-black text-[#2d1f60]">{t('shareWithFriends')}</span>
@@ -275,19 +327,6 @@ export const WorkoutsScreen = () => {
           <button onClick={() => navigate('/summary')} className="bg-white border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 hover:bg-gray-50 transition-all group">
             <BarChart2 className="text-[#534AB7] group-hover:rotate-12 transition-transform" size={28} />
             <span className="text-xs font-black text-[#2d1f60]">סיכום ביצועים</span>
-          </button>
-        </div>
-        
-        {/* AI Assistant Button */}
-        <div className="w-full pb-4">
-          <button 
-            onClick={() => setShowAIModal(true)}
-            className="w-full bg-[#534AB7] text-white p-4 rounded-[16px] flex flex-row items-center justify-center gap-3 active:scale-95 transition-all"
-          >
-            <div className="bg-white p-2 rounded-full text-[#534AB7]">
-              <Sparkles size={20} />
-            </div>
-            <span className="text-lg font-bold">עוזר AI אישי</span>
           </button>
         </div>
       </div>
@@ -311,7 +350,7 @@ export const WorkoutsScreen = () => {
             initial={{ y: -20, opacity: 0, scale: 0.95 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: -20, opacity: 0, scale: 0.95 }}
-            className="absolute top-[120px] left-6 right-6 bg-white rounded-2xl z-50 shadow-xl border border-gray-100 overflow-hidden max-h-[300px] overflow-y-auto [&::-webkit-scrollbar]:hidden"
+            className="absolute top-[120px] left-6 right-6 bg-white rounded-[20px] z-50 border-[0.5px] border-[#F0F0F0] overflow-hidden max-h-[300px] overflow-y-auto [&::-webkit-scrollbar]:hidden"
           >
             <div className="flex flex-col">
               {workoutTypes.map((type) => (
@@ -321,7 +360,7 @@ export const WorkoutsScreen = () => {
                     setWorkoutType(type);
                     setShowTypeModal(false);
                   }}
-                  className={`p-4 text-left font-medium hover:bg-pink-50 transition-colors ${workoutType === type ? 'bg-pink-50 text-pink-600' : 'text-gray-700'}`}
+                  className={`p-4 text-left font-medium hover:bg-[#F9F9F9] transition-colors ${workoutType === type ? 'bg-[#F4F0FF] text-[#534AB7]' : 'text-gray-700'}`}
                 >
                   {type}
                 </button>
@@ -346,7 +385,7 @@ export const WorkoutsScreen = () => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="fixed inset-4 bg-[#FFF0F3] rounded-3xl z-50 shadow-2xl flex flex-col max-w-sm mx-auto overflow-hidden border border-white/50"
+              className="fixed inset-4 bg-[#ffffff] rounded-[20px] z-50 flex flex-col max-w-sm mx-auto overflow-hidden border-[0.5px] border-[#F0F0F0]"
             >
               <button
                 onClick={handleTutorialComplete}
@@ -832,92 +871,64 @@ export const WorkoutsScreen = () => {
         )}
       </AnimatePresence>
 
-      {/* AI Assistant Modal */}
+      {/* Join Workout Modal */}
       <AnimatePresence>
-        {showAIModal && (
+        {showJoinModal && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setShowAIModal(false)}
+              onClick={() => setShowJoinModal(false)}
               className="fixed inset-0 bg-black/50 z-50 backdrop-blur-sm"
             />
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className={`fixed inset-4 rounded-3xl z-50 shadow-2xl flex flex-col max-w-md mx-auto overflow-hidden ${darkMode ? 'bg-slate-800' : 'bg-white'}`}
+              className="fixed inset-4 bg-white rounded-3xl z-50 shadow-2xl flex flex-col max-w-md mx-auto overflow-hidden"
             >
-              <div className={`p-6 border-b ${darkMode ? 'border-slate-700' : 'border-gray-100'}`}>
-                <h2 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{t('personalAIAssistant')}</h2>
-                <p className={`text-sm ${darkMode ? 'text-slate-300' : 'text-gray-600'}`}>{t('aiDesc')}</p>
-              </div>
-              
               <div className="flex-1 p-6 space-y-4 overflow-y-auto">
-                <div className="text-center">
-                  <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse ${darkMode ? 'bg-gradient-to-br from-pink-900 to-green-900' : 'bg-gradient-to-br from-pink-100 to-green-100'}`}>
-                    <Sparkles className={`${darkMode ? 'text-pink-300' : 'text-pink-500'} animate-spin-slow`} size={40} />
-                  </div>
-                  <p className={`mb-6 text-lg font-medium ${darkMode ? 'text-slate-200' : 'text-gray-700'}`}>
-                    {t('whatWorkoutTypeToday')}
-                  </p>
-                  <div className="flex justify-center space-x-2 mb-4">
-                    <span className="text-2xl animate-bounce">💪</span>
-                    <span className="text-2xl animate-bounce delay-100">🏃</span>
-                    <span className="text-2xl animate-bounce delay-200">🧘</span>
-                  </div>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-bold text-gray-800">הצטרף לאימון</h2>
+                  <button onClick={() => setShowJoinModal(false)}>
+                    <X className="text-gray-500" size={24} />
+                  </button>
                 </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { type: t('strengthTraining'), emoji: '🏋️', color: 'from-pink-300 to-pink-400' },
-                    { type: t('cardio'), emoji: '🏃', color: 'from-green-300 to-green-400' },
-                    { type: t('yoga'), emoji: '🧘', color: 'from-purple-300 to-pink-300' },
-                    { type: 'HIIT', emoji: '⚡', color: 'from-pink-200 to-purple-300' },
-                    { type: t('running'), emoji: '🏃‍♀️', color: 'from-green-200 to-green-300' },
-                    { type: t('swimming'), emoji: '🏊', color: 'from-pink-100 to-green-200' }
-                  ].map((workout) => (
-                    <button
-                      key={workout.type}
-                      onClick={() => {
-                        const goal = userData?.goal;
-                        let recommendation = '';
-                        
-                        // Generate recommendation based on user data
-                        if (goal === 'buildMuscle' && workout.type === t('strengthTraining')) {
-                          recommendation = `מומלץ לך (${userData?.age || '20'} שנים, ${userData?.weight || '70'} ק"ג): אימון כוח עם התמקדות בתרגילי משקולות כבדות. התחל עם 3 סטים של 8-12 חזרות, עם מנוחה של 60 שניות בין הסטים. התמקד בתרגילים מרכזיים כמו סקוואט, דדליפט ובנץ' פרס.`;
-                        } else if (goal === 'loseWeight' && (workout.type === t('cardio') || workout.type === t('running'))) {
-                          recommendation = `מומלץ לך (${userData?.age || '20'} שנים, ${userData?.weight || '70'} ק"ג): אימון קרדיו התערבותי לשריפת קלוריות. התחל עם 30 דקות, החלף בין ריצה מהירה ל-90 שניות והליכה ל-60 שניות. חזור על הפעולה 10-15 פעמים.`;
-                        } else if (goal === 'improveEndurance' && workout.type === t('running')) {
-                          recommendation = `מומלץ לך (${userData?.age || '20'} שנים): ריצת התערבותית הדרגתית לשיפור סיבולת. התחל מ-20 דקות ריצה קלה, והוסף 2 דקות כל שבוע. מטרה: הגעה ל-45 דקות ריצה רצופה תוך חודשיים.`;
-                        } else if (goal === 'flexibility' && workout.type === t('yoga')) {
-                          recommendation = `מומלץ לך: יוגה לגמישות ואיזון. התחל עם 20 דקות של תנוחות בסיסיות כמו כלב מכוון, עץ, ולוחם. התמקד בנשימות עמוקות והשאר בכל תנוחה 5-10 נשימות.`;
-                        } else {
-                          recommendation = `מומלץ לך (${userData?.age || '20'} שנים, ${userData?.weight || '70'} ק"ג): ${workout.type} - אימון מאוזן שמתאים למטרות הכושר הכלליות שלך. התחל עם 30 דקות והגדל בהדרגה את העצימות והמשך הזמן.`;
-                        }
-                        
-                        showToast(recommendation, 'info');
-                        setShowAIModal(false);
-                      }}
-                      className={`w-full p-4 rounded-2xl transition-all transform hover:scale-105 ${darkMode ? `bg-gradient-to-r ${workout.color.replace('300', '800').replace('200', '700')} hover:from-${workout.color.split('-')[0]}-700 hover:to-${workout.color.split('-')[2].replace('300', '800').replace('200', '700')} border border-white/20` : `bg-gradient-to-r ${workout.color} hover:from-${workout.color.split('-')[0]}-400 hover:to-${workout.color.split('-')[2].replace('300', '400').replace('200', '300')} border border-white/50`} shadow-lg`}
-                    >
-                      <div className="flex flex-col items-center space-y-2">
-                        <span className="text-2xl">{workout.emoji}</span>
-                        <span className={`font-medium text-center ${darkMode ? 'text-white' : 'text-gray-800'}`}>{workout.type}</span>
+                
+                {loadingWorkouts ? (
+                  <div className="text-center py-8">
+                    <div className="text-gray-500">טוען אימונים...</div>
+                  </div>
+                ) : availableWorkouts.length === 0 ? (
+                  <div className="text-center py-8">
+                    <div className="text-gray-500">אין אימונים זמינים כרגע</div>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {availableWorkouts.map((workout) => (
+                      <div
+                        key={workout.id}
+                        className="p-4 border-[0.5px] border-[#F0F0F0] rounded-xl flex items-center justify-between"
+                      >
+                        <div>
+                          <div className="font-bold text-gray-900">{workout.name || workout.type}</div>
+                          <div className="text-sm text-gray-500">{workout.date || 'תאריך לא צוין'}</div>
+                          <div className="text-xs text-gray-400 flex items-center gap-1">
+                            <Users size={12} />
+                            {workout.participants?.length || 0} משתתפים
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => handleJoinWorkout(workout.id)}
+                          className="px-4 py-2 bg-[#534AB7] text-white rounded-xl font-bold text-sm"
+                        >
+                          הצטרף
+                        </button>
                       </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-              
-              <div className={`p-6 border-t ${darkMode ? 'border-slate-700' : 'border-gray-100'}`}>
-                <button
-                  onClick={() => setShowAIModal(false)}
-                  className={`w-full font-bold py-4 rounded-2xl transition-all ${darkMode ? 'bg-pink-800 hover:bg-pink-700 text-pink-100' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-                >
-                  {t('close')}
-                </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </motion.div>
           </>

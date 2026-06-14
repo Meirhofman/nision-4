@@ -69,11 +69,11 @@ function MealModal({ onClose, darkMode, onSave, initial }: MealModalProps) {
   const [saved, setSaved] = useState(false);
 
   const dk = darkMode;
-  const bg      = dk ? '#1a1033' : '#fff';
-  const surface = dk ? '#241a40' : '#f7f6ff';
-  const border  = dk ? '#3a2a60' : '#e8e4ff';
+  const bg      = dk ? '#1a1033' : '#ffffff';
+  const surface = dk ? '#241a40' : '#F9F9F9';
+  const border  = dk ? '#3a2a60' : '#F0F0F0';
   const text    = dk ? '#f3f0ff' : '#2d1f60';
-  const muted   = dk ? '#9b8dc8' : '#b0a8cc';
+  const muted   = dk ? '#9b8dc8' : '#999999';
 
   const handleSave = () => {
     if (!name || !calories) return;
@@ -98,7 +98,7 @@ function MealModal({ onClose, darkMode, onSave, initial }: MealModalProps) {
       style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)' }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="w-full rounded-t-3xl p-5 pb-8" style={{ background: bg, border: `1px solid ${border}` }} dir="rtl">
+      <div className="w-full rounded-t-[20px] p-5 pb-8" style={{ background: bg, border: `0.5px solid ${border}` }} dir="rtl">
         <div className="w-12 h-1.5 rounded-full mx-auto mb-4" style={{ background: border }} />
 
         {saved ? (
@@ -124,8 +124,8 @@ function MealModal({ onClose, darkMode, onSave, initial }: MealModalProps) {
                 <button
                   key={m.id}
                   onClick={() => { setMealType(m.label); setMealEmoji(m.emoji); setStep('details'); }}
-                  className="p-4 rounded-2xl flex flex-col items-center gap-2 active:scale-95 transition-all"
-                  style={{ background: surface, border: `1.5px solid ${border}` }}
+                  className="p-4 rounded-[16px] flex flex-col items-center gap-2 active:scale-95 transition-all"
+                  style={{ background: surface, border: `0.5px solid ${border}` }}
                 >
                   <span className="text-3xl">{m.emoji}</span>
                   <span className="text-sm font-bold" style={{ color: text }}>{m.label}</span>
@@ -153,9 +153,9 @@ function MealModal({ onClose, darkMode, onSave, initial }: MealModalProps) {
                   onClick={() => { setName(f.name); setCalories(f.calories); }}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold transition-all active:scale-95"
                   style={{
-                    background: name === f.name ? '#7c3aed' : surface,
+                    background: name === f.name ? '#534AB7' : surface,
                     color: name === f.name ? '#fff' : text,
-                    border: `1px solid ${name === f.name ? '#7c3aed' : border}`,
+                    border: `0.5px solid ${name === f.name ? '#534AB7' : border}`,
                   }}
                 >
                   <span>{f.emoji}</span>
@@ -189,7 +189,7 @@ function MealModal({ onClose, darkMode, onSave, initial }: MealModalProps) {
             {calories && (
               <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-xl" style={{ background: surface }}>
                 <span className="text-sm" style={{ color: muted }}>קלוריות:</span>
-                <span className="font-black text-sm" style={{ color: '#7c3aed' }}>{calories} קל'</span>
+                <span className="font-black text-sm" style={{ color: '#534AB7' }}>{calories} קל'</span>
                 <div className="flex-1" />
                 <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{
                   background: `${getGrade(parseInt(calories)||0).color}20`,
@@ -203,8 +203,8 @@ function MealModal({ onClose, darkMode, onSave, initial }: MealModalProps) {
             <button
               onClick={handleSave}
               disabled={!name || !calories}
-              className="w-full py-3.5 rounded-2xl font-black text-white text-sm disabled:opacity-40 active:scale-95 transition-all"
-              style={{ background: 'linear-gradient(135deg,#7c3aed,#a78bfa)' }}
+              className="w-full py-3.5 rounded-[20px] font-black text-white text-sm disabled:opacity-40 active:scale-95 transition-all"
+              style={{ background: '#534AB7' }}
             >
               {initial ? 'עדכן ארוחה' : 'שמור ארוחה'}
             </button>
@@ -217,22 +217,22 @@ function MealModal({ onClose, darkMode, onSave, initial }: MealModalProps) {
 
 // ─── Recipes Modal ─────────────────────────────────────────────────────────────
 function RecipesModal({ onClose, darkMode }: { onClose: () => void; darkMode: boolean }) {
-  const bg     = darkMode ? '#1a1033' : '#fff';
-  const border = darkMode ? '#3a2a60' : '#e8e4ff';
+  const bg     = darkMode ? '#1a1033' : '#ffffff';
+  const border = darkMode ? '#3a2a60' : '#F0F0F0';
   const text   = darkMode ? '#f3f0ff' : '#2d1f60';
-  const muted  = darkMode ? '#9b8dc8' : '#b0a8cc';
+  const muted  = darkMode ? '#9b8dc8' : '#999999';
   return (
     <div
       className="absolute inset-0 z-50 flex flex-col justify-end"
       style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)' }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="w-full rounded-t-3xl p-7 pb-10 text-center" style={{ background: bg, border: `1px solid ${border}` }} dir="rtl">
+      <div className="w-full rounded-t-[20px] p-7 pb-10 text-center" style={{ background: bg, border: `0.5px solid ${border}` }} dir="rtl">
         <div className="w-12 h-1.5 rounded-full mx-auto mb-5" style={{ background: border }} />
         <div className="text-5xl mb-3">📖</div>
         <h2 className="font-black text-xl mb-1" style={{ color: text }}>מתכונים</h2>
         <p className="text-sm mb-5" style={{ color: muted }}>🚀 בקרוב יעלו מתכונים חדשים ומותאמים אישית!</p>
-        <div className="rounded-2xl p-4 mb-5 text-right" style={{ background: darkMode ? '#241a40' : '#f3f1ff', border: `1px solid ${border}` }}>
+        <div className="rounded-[16px] p-4 mb-5 text-right" style={{ background: darkMode ? '#241a40' : '#F9F9F9', border: `0.5px solid ${border}` }}>
           {['מתכונים לפי יעד קלורי', 'מתכונים לפי אלרגיות', 'תוכנית שבועית מותאמת אישית'].map((item) => (
             <div key={item} className="flex items-center gap-2 py-1">
               <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
@@ -240,7 +240,7 @@ function RecipesModal({ onClose, darkMode }: { onClose: () => void; darkMode: bo
             </div>
           ))}
         </div>
-        <button onClick={onClose} className="w-full py-3 rounded-2xl font-black text-white" style={{ background: 'linear-gradient(135deg,#7c3aed,#a78bfa)' }}>
+        <button onClick={onClose} className="w-full py-3 rounded-[20px] font-black text-white" style={{ background: '#534AB7' }}>
           סגור
         </button>
       </div>
@@ -257,11 +257,11 @@ function MealRow({ meal, bg, border, text, muted, onEdit }: {
   return (
     <div
       className="p-4 rounded-[16px] flex items-center gap-3 relative transition-all"
-      style={{ background: '#ffffff', border: hovered ? `1px solid #7c3aed` : `0.5px solid #F0F0F0`, cursor: 'default' }}
+      style={{ background: '#ffffff', border: hovered ? `0.5px solid #534AB7` : `0.5px solid #F0F0F0`, cursor: 'default' }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg" style={{ background: 'rgba(124,58,237,0.08)' }}>
+      <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg" style={{ background: 'rgba(83,74,183,0.08)' }}>
         {meal.typeEmoji}
       </div>
       <div className="flex-1">
@@ -281,7 +281,7 @@ function MealRow({ meal, bg, border, text, muted, onEdit }: {
         <button
           onClick={onEdit}
           className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center shadow-lg transition-all active:scale-90"
-          style={{ background: '#7c3aed' }}
+          style={{ background: '#534AB7' }}
           title="ערוך ארוחה"
         >
           <Pencil className="w-4 h-4 text-white" />
@@ -310,11 +310,11 @@ export function NutritionScreen({ lang = 'he' }: { lang?: Language }) {
   const [cameraPhoto, setCameraPhoto] = useState<string | null>(null);
 
   const dk      = darkMode;
-  const bg      = dk ? '#0f0a1e' : '#f7f6ff';
+  const bg      = dk ? '#0f0a1e' : '#F9F9F9';
   const card    = dk ? '#1a1033' : '#ffffff';
-  const border  = dk ? '#2e1f50' : '#e8e4ff';
+  const border  = dk ? '#2e1f50' : '#F0F0F0';
   const text    = dk ? '#f3f0ff' : '#2d1f60';
-  const muted   = dk ? '#9b8dc8' : '#b0a8cc';
+  const muted   = dk ? '#9b8dc8' : '#999999';
 
   const totalCalories = meals.reduce((s, m) => s + (parseInt(m.calories) || 0), 0);
 
@@ -335,22 +335,22 @@ export function NutritionScreen({ lang = 'he' }: { lang?: Language }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: dk ? '#060410' : '#eee9ff' }}>
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: dk ? '#060410' : '#F9F9F9' }}>
       <input ref={fileInputRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={handleFileChange} />
 
       {/* Phone Frame */}
       <div
         className="w-full max-w-[390px] min-h-[844px] relative flex flex-col overflow-hidden rounded-[36px] shadow-2xl"
-        style={{ background: bg, border: `3px solid ${border}` }}
+        style={{ background: bg, border: `0.5px solid ${border}` }}
       >
         {/* Camera Photo Toast */}
         {cameraPhoto && (
-          <div className="absolute top-20 left-4 right-4 z-40 rounded-2xl overflow-hidden shadow-2xl" style={{ border: `1px solid ${border}` }}>
+          <div className="absolute top-20 left-4 right-4 z-40 rounded-[16px] overflow-hidden shadow-2xl" style={{ border: `0.5px solid ${border}` }}>
             <img src={cameraPhoto} alt="צולם" className="w-full h-36 object-cover" />
             <div className="p-3 flex items-center justify-between" style={{ background: card }}>
               <button onClick={() => setCameraPhoto(null)} className="text-xs" style={{ color: muted }}>סגור</button>
-              <span className="text-xs font-bold" style={{ color: '#7c3aed' }}>📸 תמונה צולמה!</span>
-              <button onClick={() => { setActiveModal('addMeal'); setCameraPhoto(null); }} className="text-xs font-black px-3 py-1 rounded-full text-white" style={{ background: '#7c3aed' }}>
+              <span className="text-xs font-bold" style={{ color: '#534AB7' }}>📸 תמונה צולמה!</span>
+              <button onClick={() => { setActiveModal('addMeal'); setCameraPhoto(null); }} className="text-xs font-black px-3 py-1 rounded-full text-white" style={{ background: '#534AB7' }}>
                 הוסף ארוחה
               </button>
             </div>
@@ -358,7 +358,7 @@ export function NutritionScreen({ lang = 'he' }: { lang?: Language }) {
         )}
 
         {/* Top Bar */}
-        <div className="w-full bg-white rounded-t-[36px] overflow-hidden" dir="rtl">
+        <div className="w-full bg-white rounded-t-[20px] overflow-hidden" dir="rtl">
           <NewTopBar title="תזונה" />
         </div>
 
@@ -366,7 +366,7 @@ export function NutritionScreen({ lang = 'he' }: { lang?: Language }) {
         <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 pb-8" dir="rtl">
 
           {/* Hero Card */}
-          <div className="relative overflow-hidden mb-5 rounded-[20px] p-6" style={{ background: '#ffffff', border: '0.5px solid #F0F0F0' }}>
+          <div className="relative overflow-hidden mb-5 rounded-[16px] p-6" style={{ background: '#ffffff', border: '0.5px solid #F0F0F0' }}>
             <div className="relative z-10">
               <div className="flex items-start justify-between mb-3">
                 <div>
