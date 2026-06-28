@@ -1,20 +1,9 @@
 import React, { useState, useRef } from 'react';
-import {
-  ChevronRight,
-  Star,
-  ClipboardList,
-  Camera,
-  Book,
-  X,
-  Plus,
-  ChevronLeft,
-  CheckCircle,
-  Pencil,
-} from "lucide-react";
-import { nutritionScreenStrings, Language } from "@/i18n/nutritionScreen";
+import { ChevronRight, Star, ClipboardList, Camera, Book, X, Plus, ChevronLeft, CheckCircle, Pencil } from "lucide-react";
 import { useNavigate } from 'react-router';
 import { useApp } from '../context/AppContext';
 import { NewTopBar } from '../components/NewTopBar';
+
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 interface Meal {
@@ -299,7 +288,7 @@ const INITIAL_MEALS: Meal[] = [
 ];
 
 export function NutritionScreen({ lang = 'he' }: { lang?: Language }) {
-  const t = nutritionScreenStrings[lang];
+  const { t } = useApp();
   const navigate = useNavigate();
   const { darkMode } = useApp();
 
@@ -359,7 +348,7 @@ export function NutritionScreen({ lang = 'he' }: { lang?: Language }) {
 
         {/* Top Bar */}
         <div className="w-full bg-white rounded-t-[20px] overflow-hidden" dir="rtl">
-          <NewTopBar title="תזונה" />
+          <NewTopBar title={t('nutrition')} />
         </div>
 
         {/* Content Area */}
@@ -390,17 +379,17 @@ export function NutritionScreen({ lang = 'he' }: { lang?: Language }) {
 
           {/* Quick Add Row */}
           <div className="grid grid-cols-3 gap-3 mb-5">
-            <QuickCard icon={<ClipboardList className="w-5 h-5" />} label="הזן ארוחה" highlighted border={border} text={text} onClick={() => { setEditingMeal(null); setActiveModal('addMeal'); }} />
-            <QuickCard icon={<Camera className="w-5 h-5" />} label={t.photoPlate} border={border} text={text} card={card} onClick={handleCameraClick} />
-            <QuickCard icon={<Book className="w-5 h-5" />} label={t.recipes} border={border} text={text} card={card} onClick={() => setActiveModal('recipes')} />
+            <QuickCard icon={<ClipboardList className="w-5 h-5" />} label={t('addMeal')} highlighted border={border} text={text} onClick={() => { setEditingMeal(null); setActiveModal('addMeal'); }} />
+            <QuickCard icon={<Camera className="w-5 h-5" />} label={t('photoPlate')} border={border} text={text} card={card} onClick={handleCameraClick} />
+            <QuickCard icon={<Book className="w-5 h-5" />} label={t('recipes')} border={border} text={text} card={card} onClick={() => setActiveModal('recipes')} />
           </div>
 
           {/* Meal Log Section */}
           <div className="mb-4">
             <div className="flex items-center justify-between mb-3">
-              <div className="font-bold" style={{ color: text }}>{t.mealLog}</div>
-              <span className="text-xs" style={{ color: muted }}>{meals.length} ארוחות</span>
-            </div>
+            <div className="font-bold" style={{ color: text }}>{t('mealLog')}</div>
+            <span className="text-xs" style={{ color: muted }}>{meals.length} {t('meals')}</span>
+          </div>
             <div className="space-y-2">
               {meals.map((meal) => (
                 <MealRow
@@ -423,7 +412,7 @@ export function NutritionScreen({ lang = 'he' }: { lang?: Language }) {
             style={{ background: 'linear-gradient(135deg,#7c3aed,#a78bfa)' }}
           >
             <Plus className="w-5 h-5" />
-            הוסף ארוחה
+            {t('addMealCTA')}
           </button>
         </div>
 

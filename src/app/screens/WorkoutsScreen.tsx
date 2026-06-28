@@ -66,11 +66,11 @@ export const WorkoutsScreen = () => {
   const [dailyGoal, setDailyGoal] = useState(userData?.dailyStepsGoal || 8000);
   const suggestedType = (() => {
     const g = userData?.goal;
-    if (g === 'loseWeight') return 'הליכה';
-    if (g === 'buildMuscle') return 'אימון כוח';
-    if (g === 'improveEndurance') return 'ריצה';
-    if (g === 'flexibility') return 'יוגה';
-    return 'הליכה';
+    if (g === 'loseWeight') return t('walking');
+    if (g === 'buildMuscle') return t('strengthTraining');
+    if (g === 'improveEndurance') return t('running');
+    if (g === 'flexibility') return t('yoga');
+    return t('walking');
   })();
   const [showTypeModal, setShowTypeModal] = useState(false);
   const [workoutType, setWorkoutType] = useState(suggestedType);
@@ -155,33 +155,33 @@ export const WorkoutsScreen = () => {
 
   const tutorialSteps = [
     {
-      title: "ברוכים הבאים למרכז האימונים! 💪",
-      description: "כאן תוכלו לעקוב אחר האימונים שלכם, לצפות בסיכומים ולראות את ההיסטוריה שלכם.",
+      title: t('workoutsTutorialWelcomeTitle'),
+      description: t('workoutsTutorialWelcomeDesc'),
       bullets: [
-        "עקוב אחר אימונים בזמן אמת",
-        "צפה בסיכומי אימונים מפורטים",
-        "גש להיסטוריית האימונים המלאה שלך",
-        "קבע אימונים וקבל תזכורות"
+        t('workoutsTutorialBullet1'),
+        t('workoutsTutorialBullet2'),
+        t('workoutsTutorialBullet3'),
+        t('workoutsTutorialBullet4'),
       ]
     },
     {
-      title: "התחל אימון חדש 🏃‍♂️",
-      description: "לחץ על כפתור 'התחל אימון' כדי להתחיל לעקוב אחר הפעילות שלך.",
+      title: t('workoutsTutorialStartTitle'),
+      description: t('workoutsTutorialStartDesc'),
       bullets: [
-        "בחר סוג אימון מתוך רשימה",
-        "עקוב אחר זמן, מרחק וקלוריות",
-        "קבל סיכום מפורט בסיום",
-        "שמור אוטומטית להיסטוריה"
+        t('workoutsTutorialStartBullet1'),
+        t('workoutsTutorialStartBullet2'),
+        t('workoutsTutorialStartBullet3'),
+        t('workoutsTutorialStartBullet4'),
       ]
     },
     {
-      title: "סידור אימונים ותזכורות ⏰",
-      description: "קבע אימונים מראש וקבל תזכורות כדי לא לפספס אף אימון מתוכנן.",
+      title: t('workoutsTutorialScheduleTitle'),
+      description: t('workoutsTutorialScheduleDesc'),
       bullets: [
-        "בחר סוג אימון, תאריך ושעה",
-        "קבל תזכורת אוטומטית",
-        "נהל אימונים מתוכננים",
-        "עקוב אחר היעדים שלך"
+        t('workoutsTutorialScheduleBullet1'),
+        t('workoutsTutorialScheduleBullet2'),
+        t('workoutsTutorialScheduleBullet3'),
+        t('workoutsTutorialScheduleBullet4'),
       ]
     }
   ];
@@ -242,11 +242,11 @@ export const WorkoutsScreen = () => {
     <MobileContainer className="min-h-screen relative flex flex-col bg-[#F9F9F9]"
     >
       {/* Header */}
-      <NewTopBar title="מרכז האימונים" />
+      <NewTopBar title={t('workoutCenterTitle')} />
 
       <div className="p-4">
         <div className="space-y-2">
-          <p className="text-xs font-medium text-gray-400 uppercase tracking-widest">מה עושים היום?</p>
+          <p className="text-xs font-medium text-gray-400 uppercase tracking-widest">{t('whatDoToday')}</p>
           <button
             onClick={() => setShowTypeModal(true)}
             className="w-full bg-[#ffffff] border-[0.5px] border-[#F0F0F0] rounded-2xl p-5 flex items-center justify-between"
@@ -271,20 +271,20 @@ export const WorkoutsScreen = () => {
 
         {/* Stats Row */}
         <div className="grid grid-cols-3 gap-3 w-full">
-          <div className="bg-[#F9F9F9] rounded-[12px] p-4 flex flex-col items-center justify-center space-y-1 border-[0.5px] border-[#F0F0F0]">
+          <div className={`rounded-[12px] p-4 flex flex-col items-center justify-center space-y-1 border-[0.5px] border-[#F0F0F0] ${darkMode ? 'bg-slate-800' : 'bg-[#F9F9F9]'}`}>
             <Clock size={24} className="text-[#534AB7] mb-1" />
-            <span className={`text-xl font-black tracking-tighter text-[#534AB7]`}>24m</span>
+            <span className={`text-xl font-black tracking-tighter text-[#534AB7]`}>{t('activityTime')}</span>
             <span className={`text-[10px] font-black uppercase text-[#534AB7] opacity-80`}>זמן פעילות</span>
           </div>
-          <div className="bg-[#F9F9F9] rounded-[12px] p-4 flex flex-col items-center justify-center space-y-1 border-[0.5px] border-[#F0F0F0]">
+          <div className={`rounded-[12px] p-4 flex flex-col items-center justify-center space-y-1 border-[0.5px] border-[#F0F0F0] ${darkMode ? 'bg-slate-800' : 'bg-[#F9F9F9]'}`}>
             <Footprints size={24} className="text-[#534AB7] mb-1" />
             <span className={`text-xl font-black tracking-tighter text-[#534AB7]`}>5,420</span>
-            <span className={`text-[10px] font-black uppercase text-[#534AB7] opacity-80`}>צעדים</span>
+            <span className={`text-[10px] font-black uppercase text-[#534AB7] opacity-80`}>{t('steps')}</span>
           </div>
-          <div className="bg-[#F9F9F9] rounded-[12px] p-4 flex flex-col items-center justify-center space-y-1 border-[0.5px] border-[#F0F0F0]">
+          <div className={`rounded-[12px] p-4 flex flex-col items-center justify-center space-y-1 border-[0.5px] border-[#F0F0F0] ${darkMode ? 'bg-slate-800' : 'bg-[#F9F9F9]'}`}>
             <MapPin size={24} className="text-[#534AB7] mb-1" />
             <span className={`text-xl font-black tracking-tighter text-[#534AB7]`}>3.2</span>
-            <span className={`text-[10px] font-black uppercase text-[#534AB7] opacity-80`}>מרחק (ק״מ)</span>
+            <span className={`text-[10px] font-black uppercase text-[#534AB7] opacity-80`}>{t('distanceKm')}</span>
           </div>
         </div>
 
@@ -294,39 +294,39 @@ export const WorkoutsScreen = () => {
           className="w-full h-20 bg-[#534AB7] text-white rounded-[20px] flex flex-row items-center justify-center gap-3 active:scale-95 transition-all"
         >
           <Play fill="currentColor" size={24} />
-          <span className="text-2xl font-black tracking-tight">התחל אימון {workoutType}</span>
+          <span className="text-2xl font-black tracking-tight">{t('startWorkout')} {workoutType}</span>
         </button>
 
         {/* Grid Options */}
         <div className="grid grid-cols-2 gap-3 w-full pb-20">
-          <button onClick={() => navigate('/history')} className="bg-white border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 hover:bg-gray-50 transition-all group">
+          <button onClick={() => navigate('/history')} className={`border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 transition-all group ${darkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-white hover:bg-gray-50'}`}>
             <History className="text-[#534AB7] group-hover:rotate-12 transition-transform" size={28} />
-            <span className="text-xs font-black text-[#2d1f60]">היסטוריית אימונים</span>
+            <span className={`text-xs font-black ${darkMode ? 'text-white' : 'text-[#2d1f60]'}`}>{t('workoutHistory')}</span>
           </button>
           <button 
             onClick={() => setShowScheduleModal(true)}
-            className="bg-white border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 hover:bg-gray-50 transition-all group"
+            className={`border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 transition-all group ${darkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-white hover:bg-gray-50'}`}
           >
             <Calendar className="text-[#534AB7] group-hover:rotate-12 transition-transform" size={28} />
-            <span className="text-xs font-black text-[#2d1f60]">קבע אימון</span>
+            <span className={`text-xs font-black ${darkMode ? 'text-white' : 'text-[#2d1f60]'}`}>{t('scheduleWorkout')}</span>
           </button>
           <button 
             onClick={() => {
               fetchAvailableWorkouts();
               setShowJoinModal(true);
             }}
-            className="bg-white border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 hover:bg-gray-50 transition-all group"
+            className={`border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 transition-all group ${darkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-white hover:bg-gray-50'}`}
           >
             <Users className="text-[#534AB7] group-hover:rotate-12 transition-transform" size={28} />
-            <span className="text-xs font-black text-[#2d1f60]">הצטרף לאימון</span>
+            <span className={`text-xs font-black ${darkMode ? 'text-white' : 'text-[#2d1f60]'}`}>{t('joinWorkoutButton')}</span>
           </button>
-          <button onClick={handleShare} className="bg-white border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 hover:bg-gray-50 transition-all group" title={t('shareWithFriends')}>
+          <button onClick={handleShare} className={`border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 transition-all group ${darkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-white hover:bg-gray-50'}`} title={t('shareWithFriends')}>
             <Share2 className="text-[#534AB7] group-hover:rotate-12 transition-transform" size={28} />
-            <span className="text-xs font-black text-[#2d1f60]">{t('shareWithFriends')}</span>
+            <span className={`text-xs font-black ${darkMode ? 'text-white' : 'text-[#2d1f60]'}`}>{t('shareWithFriends')}</span>
           </button>
-          <button onClick={() => navigate('/summary')} className="bg-white border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 hover:bg-gray-50 transition-all group">
+          <button onClick={() => navigate('/summary')} className={`border-[0.5px] border-[#F0F0F0] p-5 rounded-[16px] flex flex-col items-center justify-center gap-2 h-24 transition-all group ${darkMode ? 'bg-slate-800 hover:bg-slate-700' : 'bg-white hover:bg-gray-50'}`}>
             <BarChart2 className="text-[#534AB7] group-hover:rotate-12 transition-transform" size={28} />
-            <span className="text-xs font-black text-[#2d1f60]">סיכום ביצועים</span>
+            <span className={`text-xs font-black ${darkMode ? 'text-white' : 'text-[#2d1f60]'}`}>{t('performanceSummary')}</span>
           </button>
         </div>
       </div>
@@ -737,7 +737,7 @@ export const WorkoutsScreen = () => {
                       setsOrReps: ''
                     });
                     
-                    showToast('אימון נשמר בהצלחה!', 'success');
+                    showToast(t('workoutSavedSuccess'), 'success');
                   }}
                   className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold py-4 rounded-2xl hover:from-pink-600 hover:to-purple-600 transition-all"
                 >
@@ -898,11 +898,11 @@ export const WorkoutsScreen = () => {
                 
                 {loadingWorkouts ? (
                   <div className="text-center py-8">
-                    <div className="text-gray-500">טוען אימונים...</div>
+                    <div className="text-gray-500">{t('loadingWorkouts')}</div>
                   </div>
                 ) : availableWorkouts.length === 0 ? (
                   <div className="text-center py-8">
-                    <div className="text-gray-500">אין אימונים זמינים כרגע</div>
+                    <div className="text-gray-500">{t('noWorkoutsAvailable')}</div>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -916,7 +916,7 @@ export const WorkoutsScreen = () => {
                           <div className="text-sm text-gray-500">{workout.date || 'תאריך לא צוין'}</div>
                           <div className="text-xs text-gray-400 flex items-center gap-1">
                             <Users size={12} />
-                            {workout.participants?.length || 0} משתתפים
+                            {workout.participants?.length || 0} {t('participants')}
                           </div>
                         </div>
                         <button

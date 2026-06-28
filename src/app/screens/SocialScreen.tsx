@@ -6,24 +6,26 @@ import ActivitiesSheet from '../components/ActivitiesSheet';
 import LeaderboardSheet from '../components/LeaderboardSheet';
 import { MobileContainer } from '../components/MobileContainer';
 import { Trophy, Activity, Flame, Calendar } from 'lucide-react';
-import { useNavigate } from 'react-router';
+import { useApp } from '../context/AppContext';
+import { useNavigate } from 'react-router-dom';
 
 export const SocialScreen = () => {
   const [activeSheet, setActiveSheet] = useState<'competitions' | 'activities' | 'leaderboard' | null>(null);
+  const { t, darkMode } = useApp();
   const navigate = useNavigate();
 
   const closeSheet = () => setActiveSheet(null);
 
   const buttons = [
-    { id: 'competitions', icon: Trophy, label: 'תחרויות', emoji: '🏆', action: () => setActiveSheet('competitions') },
-    { id: 'activities', icon: Activity, label: 'פעילויות', emoji: '🏃', action: () => setActiveSheet('activities') },
-    { id: 'leaderboard', icon: Flame, label: 'מובילים', emoji: '🔥', action: () => setActiveSheet('leaderboard') },
-    { id: 'my-activities', icon: Calendar, label: 'הפעילויות שלי', emoji: '📅', action: () => navigate('/joined-activities') },
+    { id: 'competitions', icon: Trophy, label: t('competitions'), emoji: '🏆', action: () => setActiveSheet('competitions') },
+    { id: 'activities', icon: Activity, label: t('activities'), emoji: '🏃', action: () => setActiveSheet('activities') },
+    { id: 'leaderboard', icon: Flame, label: t('leaderboard'), emoji: '🔥', action: () => setActiveSheet('leaderboard') },
+    { id: 'my-activities', icon: Calendar, label: t('myActivities'), emoji: '📅', action: () => navigate('/joined-activities') },
   ];
 
   return (
     <MobileContainer className="h-[100dvh] overflow-hidden flex flex-col bg-white">
-      <NewTopBar title="חברתי" />
+      <NewTopBar title={t('socialScreen')} />
       
       <div className="flex-1 relative flex flex-col">
         {/* Map Section */}
@@ -44,7 +46,7 @@ export const SocialScreen = () => {
                   className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
                     isActive
                       ? 'bg-gradient-to-r from-purple-500 to-[#ff4d6d] text-white shadow-md'
-                      : 'bg-[#F5F5F5] text-gray-700'
+                      : darkMode ? 'bg-slate-800 text-gray-300' : 'bg-[#F5F5F5] text-gray-700'
                   }`}
                 >
                   <span className="text-lg">{emoji}</span>

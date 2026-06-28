@@ -261,7 +261,7 @@ export const CharacterScreen = () => {
     };
 
     return (
-        <MobileContainer className="min-h-screen relative flex flex-col justify-center bg-[#F9F9F9]">
+        <MobileContainer className={`min-h-screen relative flex flex-col justify-center ${darkMode ? 'bg-slate-900' : 'bg-[#F9F9F9]'}`}>
 
             {/* Header */}
             <div className="flex items-center justify-between p-6 z-20 mt-4">
@@ -271,10 +271,10 @@ export const CharacterScreen = () => {
                 >
                     <ChevronLeft className={isRTL ? 'rotate-180 text-gray-500' : 'text-gray-500'} size={24} />
                 </button>
-                <h1 className="text-xl font-black text-gray-900">מעצב דמות</h1>
+                <h1 className={`text-xl font-black ${darkMode ? 'text-white' : 'text-gray-900'}`}>מעצב דמות</h1>
                 <button
                     onClick={handleSave}
-                    className="px-6 py-2 bg-[#F4F0FF] text-[#534AB7] rounded-[20px] font-bold text-sm flex items-center gap-2 transition-colors"
+                    className={`px-6 py-2 rounded-[20px] font-bold text-sm flex items-center gap-2 transition-colors ${darkMode ? 'bg-slate-800 text-purple-300' : 'bg-[#F4F0FF] text-[#534AB7]'}`}
                 >
                     <span>{t('characterSave')}</span>
                 </button>
@@ -298,15 +298,15 @@ export const CharacterScreen = () => {
             </div>
 
             {/* Tabs */}
-            <div className={`rounded-t-[4rem] p-8 pb-14 min-h-[350px] bg-white mt-0`}>
+            <div className={`rounded-t-[4rem] p-8 pb-14 min-h-[350px] mt-0 ${darkMode ? 'bg-slate-800' : 'bg-white'}`}>
                 <div className="flex justify-between mb-8 overflow-x-auto no-scrollbar gap-3 pb-2">
                     {tabs.map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`flex flex-col items-center p-2 transition-all min-w-[80px] ${activeTab === tab.id
-                                ? 'text-[#534AB7] border-b-2 border-[#534AB7]'
-                                : 'text-gray-400'
+                                ? `text-[#534AB7] border-b-2 border-[#534AB7]`
+                                : darkMode ? 'text-gray-400' : 'text-gray-400'
                                 }`}
                         >
                             <span className="text-[13px] font-bold tracking-tight whitespace-nowrap">{tab.label}</span>

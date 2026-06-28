@@ -449,7 +449,7 @@ export const LoginScreen = () => {
   const storedUser = getStoredUser();
 
   return (
-    <MobileContainer className="">
+    <MobileContainer className={darkMode ? 'bg-slate-900' : ''}>
       <div className="flex-1 w-full h-full p-4 sm:p-5 flex flex-col justify-start pt-6 sm:pt-10 space-y-4 relative">
         {/* Back Button */}
         <button

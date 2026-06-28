@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { QuestionLayout } from './QuestionLayout';
 import { useApp } from '../../context/AppContext';
 import { Button, Input } from '../../components/ui';
@@ -8,10 +8,12 @@ const DISEASE_OPTIONS = ['diabetes', 'heartDisease', 'hypertension', 'asthma', '
 
 export const StepHealth = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { t, updateUserData, userData } = useApp();
   const [selectedDiseases, setSelectedDiseases] = useState<string[]>(userData.medicalConditions || []);
   const [allergies, setAllergies] = useState<string>(userData.allergies || '');
   const [additionalInfo, setAdditionalInfo] = useState<string>(userData.additionalHealthInfo || '');
+  const fromSettings = searchParams.get('from') === 'settings';
 
   const toggleDisease = (key: string) => {
     if (key === 'none') {
@@ -33,12 +35,20 @@ export const StepHealth = () => {
       allergies: allergies.trim(),
       additionalHealthInfo: additionalInfo.trim(),
     });
-    navigate('/questionnaire/goal');
+    
+    // Navigate back to settings if coming from settings
+    if (fromSettings) {
+      navigate('/settings');
+      // Show toast notification (you may need to implement toast in your app)
+      console.log('Health data updated successfully');
+    } else {
+      navigate('/questionnaire/goal');
+    }
   };
 
   return (
     <QuestionLayout
-      title={t('healthQuestion')}
+      title={fromSettings ? t('editHealthInfo') : t('healthQuestion')}
       onNext={handleNext}
       canNext={true}
       showBack={true}

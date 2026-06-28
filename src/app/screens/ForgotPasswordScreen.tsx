@@ -9,7 +9,7 @@ import { ArrowRight, Mail, CheckCircle } from 'lucide-react';
 
 export const ForgotPasswordScreen = () => {
   const navigate = useNavigate();
-  const { t, characterState } = useApp();
+  const { t, characterState, darkMode } = useApp();
   const [username, setUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -66,12 +66,12 @@ export const ForgotPasswordScreen = () => {
   };
 
   return (
-    <MobileContainer className="">
+    <MobileContainer className={darkMode ? 'bg-slate-900' : ''}>
       <div className="flex-1 w-full h-full p-4 sm:p-5 flex flex-col justify-start pt-6 sm:pt-10 space-y-4 relative">
         {/* Back Button */}
         <button
           onClick={() => navigate('/login')}
-          className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 text-gray-800 transition-colors z-10"
+          className={`absolute top-4 right-4 p-2 rounded-full transition-colors z-10 ${darkMode ? 'hover:bg-slate-800 text-gray-300' : 'hover:bg-gray-100 text-gray-800'}`}
           aria-label="Back to login"
         >
           <ArrowRight size={24} />
@@ -79,15 +79,15 @@ export const ForgotPasswordScreen = () => {
 
       <div className="flex flex-col items-center justify-center space-y-1 min-h-[120px] sm:min-h-[140px]">
         <Character state={characterState} size="md" />
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">LAZOZ</h1>
+        <h1 className={`text-2xl sm:text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>LAZOZ</h1>
       </div>
 
       <div className="w-full max-w-sm mx-auto space-y-4">
         {step === 'verify' ? (
           <>
             <div className="text-center space-y-2">
-              <h2 className="text-xl font-bold text-gray-800">שחזור סיסמה</h2>
-              <p className="text-sm text-gray-600">הכנס את שם המשתמש כדי לאמת את זהותך</p>
+              <h2 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>שחזור סיסמה</h2>
+              <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>הכנס את שם המשתמש כדי לאמת את זהותך</p>
             </div>
 
             <div className="space-y-3">
@@ -119,8 +119,8 @@ export const ForgotPasswordScreen = () => {
         ) : (
           <>
             <div className="text-center space-y-2">
-              <h2 className="text-xl font-bold text-gray-800">הגדרת סיסמה חדשה</h2>
-              <p className="text-sm text-gray-600">עבור משתמש: {username}</p>
+              <h2 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>הגדרת סיסמה חדשה</h2>
+              <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>עבור משתמש: {username}</p>
             </div>
 
             <div className="space-y-3">
@@ -135,7 +135,7 @@ export const ForgotPasswordScreen = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors touch-manipulation"
+                  className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors touch-manipulation ${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}
                 >
                   {showPassword ? '👁️‍🗨️' : '👁️'}
                 </button>
@@ -153,23 +153,23 @@ export const ForgotPasswordScreen = () => {
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors touch-manipulation"
+                  className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors touch-manipulation ${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}
                 >
                   {showConfirmPassword ? '👁️‍🗨️' : '👁️'}
                 </button>
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-xl p-3">
-                  <p className="text-sm text-red-600 text-center font-medium">{error}</p>
+                <div className={`rounded-xl p-3 ${darkMode ? 'bg-red-900/20 border-red-800' : 'bg-red-50 border-red-200'} border`}>
+                  <p className={`text-sm text-center font-medium ${darkMode ? 'text-red-400' : 'text-red-600'}`}>{error}</p>
                 </div>
               )}
 
               {success && (
-                <div className="bg-green-50 border border-green-200 rounded-xl p-3">
+                <div className={`rounded-xl p-3 ${darkMode ? 'bg-green-900/20 border-green-800' : 'bg-green-50 border-green-200'} border`}>
                   <div className="flex items-center justify-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    <p className="text-sm text-green-600 text-center font-medium">הסיסמה שונתה בהצלחה!</p>
+                    <CheckCircle size={16} className={darkMode ? 'text-green-400' : 'text-green-600'} />
+                    <p className={`text-sm text-center font-medium ${darkMode ? 'text-green-400' : 'text-green-600'}`}>הסיסמה שונתה בהצלחה!</p>
                   </div>
                 </div>
               )}
@@ -188,7 +188,7 @@ export const ForgotPasswordScreen = () => {
 
         <button
           onClick={() => navigate('/login')}
-          className="w-full text-center text-sm text-gray-600 hover:text-gray-700 font-medium touch-manipulation py-2 transition-colors"
+          className={`w-full text-center text-sm font-medium touch-manipulation py-2 transition-colors ${darkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-600 hover:text-gray-700'}`}
         >
           חזרה להתחברות
         </button>

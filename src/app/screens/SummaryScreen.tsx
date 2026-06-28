@@ -63,7 +63,7 @@ const MetricCard = ({ label, value, unit, type, fullWidth = false }: { label: st
 
 export const SummaryScreen = () => {
   const navigate = useNavigate();
-  const { t, isRTL } = useApp();
+  const { t, isRTL, darkMode } = useApp();
   const [activeTab, setActiveTab] = useState<'daily' | 'weekly' | 'monthly'>('daily');
   const [motivation, setMotivation] = useState("");
 
@@ -192,13 +192,13 @@ export const SummaryScreen = () => {
   };
 
   return (
-    <MobileContainer className="min-h-screen relative flex flex-col overflow-y-auto">
+    <MobileContainer className={`min-h-screen relative flex flex-col overflow-y-auto ${darkMode ? 'bg-slate-900' : 'bg-white'}`}>
        {/* Header */}
-       <div className="p-6 pt-12 flex items-center justify-between bg-white/50 backdrop-blur-sm z-10 sticky top-0">
-         <h1 className="text-2xl font-bold text-gray-800">{t('activitySummary')}</h1>
+       <div className={`p-6 pt-12 flex items-center justify-between z-10 sticky top-0 ${darkMode ? 'bg-slate-900/50' : 'bg-white/50'} backdrop-blur-sm`}>
+         <h1 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{t('activitySummary')}</h1>
          <button
-           onClick={() => navigate('/main')}
-           className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-gray-600 hover:bg-gray-50 border border-gray-100"
+           onClick={() => navigate('/workouts')}
+           className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm border ${darkMode ? 'bg-slate-800 text-gray-300 hover:bg-slate-700 border-slate-700' : 'bg-white text-gray-600 hover:bg-gray-50 border-gray-100'}`}
          >
            <ChevronLeft size={24} className={isRTL ? "rotate-180" : ""} />
          </button>
@@ -233,7 +233,7 @@ export const SummaryScreen = () => {
 
          {/* Motivation Sentence */}
          <div className="mt-8 mb-4 text-center">
-            <p className="text-gray-500 font-medium italic">"{motivation}"</p>
+            <p className={`font-medium italic ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>"{motivation}"</p>
          </div>
        </div>
 

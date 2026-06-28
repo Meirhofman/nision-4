@@ -26,7 +26,7 @@ const historyData = [
 
 export const HistoryScreen = () => {
   const navigate = useNavigate();
-  const { t, workoutHistory, language, deleteWorkoutFromHistory } = useApp();
+  const { t, workoutHistory, language, deleteWorkoutFromHistory, darkMode } = useApp();
 
   const formatWorkoutDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -116,24 +116,24 @@ export const HistoryScreen = () => {
   };
 
   return (
-    <MobileContainer className="min-h-screen flex flex-col relative">
+    <MobileContainer className={`min-h-screen flex flex-col relative ${darkMode ? 'bg-slate-900' : 'bg-white'}`}>
       {/* Header */}
-      <div className="p-6 pb-2 pt-12 flex items-center relative justify-center bg-white/50 backdrop-blur-sm z-10">
+      <div className={`p-6 pb-2 pt-12 flex items-center relative justify-center z-10 ${darkMode ? 'bg-slate-900/50' : 'bg-white/50'} backdrop-blur-sm`}>
         <button
-          onClick={() => navigate('/main')}
-          className="absolute left-6 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-gray-600 hover:bg-gray-50"
+          onClick={() => navigate('/workouts')}
+          className={`absolute left-6 w-10 h-10 rounded-full flex items-center justify-center shadow-sm hover:bg-gray-50 ${darkMode ? 'bg-slate-800 text-gray-300 hover:bg-slate-700' : 'bg-white text-gray-600'}`}
         >
           <ChevronLeft size={24} />
         </button>
-        <h1 className="text-xl font-bold text-slate-800">{t('workoutHistory')}</h1>
+        <h1 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-800'}`}>{t('workoutHistory')}</h1>
       </div>
 
       {/* List */}
       <div className="flex-1 overflow-y-auto p-6 space-y-4 [&::-webkit-scrollbar]:hidden pb-24">
         {workoutHistory.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">{t('noWorkoutHistory')}</p>
-            <p className="text-gray-400 text-sm mt-2">{t('startLoggingWorkouts')}</p>
+            <p className={`text-lg ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>{t('noWorkoutHistory')}</p>
+            <p className={`text-sm mt-2 ${darkMode ? 'text-gray-600' : 'text-gray-400'}`}>{t('startLoggingWorkouts')}</p>
           </div>
         ) : (
           workoutHistory.map((workout, index) => (
@@ -142,14 +142,14 @@ export const HistoryScreen = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-white rounded-3xl p-5 shadow-sm border border-gray-100/50 cursor-pointer hover:shadow-md transition-shadow"
+              className={`rounded-3xl p-5 shadow-sm border cursor-pointer hover:shadow-md transition-shadow ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100/50'}`}
             >
               <div className="flex justify-between items-start mb-3">
                 <div className="flex-1">
-                  <p className="text-gray-400 text-xs font-medium mb-1">
+                  <p className={`text-xs font-medium mb-1 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
                     {formatWorkoutDate(workout.date)}
                   </p>
-                  <h3 className="text-xl font-bold text-slate-800">{workout.type}</h3>
+                  <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-800'}`}>{workout.type}</h3>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="bg-[#f3e8ff] text-[#9333ea] px-3 py-1 rounded-xl text-xs font-bold">

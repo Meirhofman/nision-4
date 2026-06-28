@@ -60,7 +60,7 @@ const getTodayString = (): string => {
 interface AppState {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string | number>) => string;
   userData: any;
   updateUserData: (data: any) => void;
   isRTL: boolean;
@@ -251,8 +251,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setLanguageState(lang);
   }, []);
 
-  const t = (key: string) => {
-    return translations[key]?.[language] || key;
+  const t = (key: string, params?: Record<string, string | number>) => {
+    let text = translations[key]?.[language] || key;
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        const regex = new RegExp(`{{${k}}}`, 'g');
+        text = text.replace(regex, String(v));
+      });
+    }
+    return text;
   };
 
   const updateUserData = useCallback((data: any) => {
@@ -363,9 +370,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     } catch (_) {
       /* Firebase not configured */
     }
-    // Only clear the auth session - preserve questionnaire/profile data for returning users
+    // Clear the auth session and remove user from storage
     setCurrentUser(null);
-    // Save state so it's available when they come back
+    localStorage.removeItem('lahoz_user');
+    // Save state so it's available when they come back (without user data)
     saveAppState({ language, userData, points, nutritionData, socialData, characterState });
     // Reset returning-user dialog so they see "use saved data?" next time
     sessionStorage.removeItem('lahoz_returning_asked');

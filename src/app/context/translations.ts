@@ -103,6 +103,55 @@ export const translations: Translations = {
   social: { en: 'Social', he: 'חברתי' },
   workouts: { en: 'Workouts', he: 'אימונים' },
   settings: { en: 'Settings', he: 'הגדרות' },
+  // Flat keys for UI strings
+  // Added keys for WorkoutsScreen UI
+  workoutCenterTitle: { en: 'Workout Center', he: 'מרכז האימונים' },
+  whatDoToday: { en: 'What are we doing today?', he: 'מה עושים היום?' },
+  startWorkoutButton: { en: 'Start Workout', he: 'התחל אימון' },
+
+  // Added keys for WorkoutsScreen UI (missing)
+  workoutsTutorialWelcomeTitle: { en: 'Welcome to the Workout Center! 💪', he: 'ברוכים הבאים למרכז האימונים! 💪' },
+  workoutsTutorialWelcomeDesc: { en: 'Here you can track your workouts, view summaries and see your history.', he: 'כאן תוכלו לעקוב אחר האימונים שלכם, לצפות בסיכומים ולראות את ההיסטוריה שלכם.' },
+  workoutsTutorialBullet1: { en: 'Track workouts in real time', he: 'עקוב אחר אימונים בזמן אמת' },
+  workoutsTutorialBullet2: { en: 'View workout summaries', he: 'צפה בסיכומי אימונים מפורטים' },
+  workoutsTutorialBullet3: { en: 'Access full workout history', he: 'גש להיסטוריית האימונים המלאה שלך' },
+  workoutsTutorialBullet4: { en: 'Set workouts and get reminders', he: 'קבע אימונים וקבל תזכורות' },
+  workoutsTutorialStartTitle: { en: 'Start a New Workout 🏃‍♂️', he: 'התחל אימון חדש 🏃‍♂️' },
+  workoutsTutorialStartDesc: { en: "Click 'Start Workout' to begin tracking your activity.", he: "לחץ על כפתור 'התחל אימון' כדי להתחיל לעקוב אחר הפעילות שלך." },
+  workoutsTutorialStartBullet1: { en: 'Choose workout type from list', he: 'בחר סוג אימון מתוך רשימה' },
+  workoutsTutorialStartBullet2: { en: 'Track time, distance and calories', he: 'עקוב אחר זמן, מרחק וקלוריות' },
+  workoutsTutorialStartBullet3: { en: 'Get detailed summary at completion', he: 'קבל סיכום מפורט בסיום' },
+  workoutsTutorialStartBullet4: { en: 'Save automatically to history', he: 'שמור אוטומטית להיסטוריה' },
+  workoutsTutorialScheduleTitle: { en: 'Schedule Workouts & Reminders ⏰', he: 'סידור אימונים ותזכורות ⏰' },
+  workoutsTutorialScheduleDesc: { en: 'Schedule workouts in advance and get reminders so you never miss a planned workout.', he: 'קבע אימונים מראש וקבל תזכורות כדי לא לפספס אף אימון מתוכנן.' },
+  workoutsTutorialScheduleBullet1: { en: 'Choose workout type, date and time', he: 'בחר סוג אימון, תאריך ושעה' },
+  workoutsTutorialScheduleBullet2: { en: 'Get automatic reminder', he: 'קבל תזכורת אוטומטית' },
+  workoutsTutorialScheduleBullet3: { en: 'Manage planned workouts', he: 'נהל אימונים מתוכננים' },
+  workoutsTutorialScheduleBullet4: { en: 'Track your goals', he: 'עקוב אחר היעדים שלך' },
+  activityTime: { en: 'Activity Time', he: 'זמן פעילות' },
+  distanceKm: { en: 'Distance (km)', he: 'מרחק (ק״מ)' },
+  loadingWorkouts: { en: 'Loading workouts...', he: 'טוען אימונים...' },
+  noWorkoutsAvailable: { en: 'No workouts available right now', he: 'אין אימונים זמינים כרגע' },
+  workoutSavedSuccess: { en: 'Workout saved successfully!', he: 'אימון נשמר בהצלחה!' },
+  dateLabel: { en: 'Date', he: 'תאריך' },
+  timeLabel: { en: 'Time', he: 'שעה' },
+  participants: { en: 'Participants', he: 'משתתפים' },
+
+  joinWorkoutButton: { en: 'Join Workout', he: 'הצטרף לאימון' },
+  shareWithFriends: { en: 'Share with friends', he: 'שתף עם חברים' },
+  linkCopied: { en: 'Link copied to clipboard! Share it with friends', he: 'הקישור הועתק ללוח! שתף אותו עם חברים' },
+  dailyGoalModalTitle: { en: 'Set Daily Goal', he: 'קבע יעד יומי' },
+  dailyGoalModalSave: { en: 'Save Goal', he: 'שמור יעד' },
+  tutorialWelcome: { en: 'Welcome to the Workout Center! 💪', he: 'ברוכים הבאים למרכז האימונים! 💪' },
+  tutorialStart: { en: 'Start a new workout 🏃‍♂️', he: 'התחל אימון חדש 🏃‍♂️' },
+  tutorialSchedule: { en: 'Schedule workouts and get reminders ⏰', he: 'קבע אימונים ותזכורות ⏰' },
+  tutorialTrack: { en: 'Track your progress', he: 'עקוב אחר ההתקדמות' },
+  tutorialEnd: { en: 'Let’s start! 🚀', he: 'בוא נתחיל! 🚀' },
+  startWorkout: { en: 'Start Workout', he: 'התחל אימון' },
+  workoutCenter: { en: 'Workout Center', he: 'מרכז האימונים' },
+  myActivities: { en: 'My Activities', he: 'הפעילויות שלי' },
+  scheduleWorkout: { en: 'Schedule Workout', he: 'קבע אימון' },
+  registerForWorkout: { en: 'Register for Workout', he: 'הצטרף לאימון' },
 
   // Workouts
   keepMoving: { en: 'Keep moving, stay amazing!', he: 'המשיכו לזוז, תישארו מדהימים!' },
@@ -112,12 +161,9 @@ export const translations: Translations = {
   steps: { en: 'Steps', he: 'צעדים' },
   distance: { en: 'Distance', he: 'מרחק' },
   time: { en: 'Time', he: 'זמן' },
-  startWorkout: { en: 'Start Workout', he: 'התחל אימון' },
   history: { en: 'History', he: 'היסטוריה' },
   schedule: { en: 'Schedule', he: 'לוח זמנים' },
-  scheduleWorkout: { en: 'Schedule Workout', he: 'תזמון אימון' },
   share: { en: 'Share', he: 'שתף' },
-  shareWithFriends: { en: 'Share progress & photos with friends', he: 'שתף התקדמות ותמונות עם חברים' },
   summary: { en: 'Summary', he: 'סיכום' },
   training: { en: 'Training', he: 'אימון' },
 
@@ -381,7 +427,7 @@ export const translations: Translations = {
   optional: { en: 'optional', he: 'אופציונלי' },
   
   // Additional workout screen translations
-  workoutCenter: { en: 'Workout Center', he: 'מרכז האימונים' },
+
   aiPersonalAssistant: { en: 'AI Personal Assistant', he: 'עוזר AI אישי' },
   scheduleWorkoutBtn: { en: 'Schedule Workout', he: 'קבע אימון' },
   workoutHistoryBtn: { en: 'Workout History', he: 'היסטוריית אימונים' },
@@ -404,16 +450,14 @@ export const translations: Translations = {
   strength: { en: 'Strength', he: 'כוח' },
   stepsLabel: { en: 'Steps', he: 'צעדים' },
   distanceLabel: { en: 'Distance (km)', he: 'מרחק (ק״מ)' },
-  date: { en: 'Date', he: 'תאריך' },
   workoutScheduled: { en: 'Workout scheduled successfully!', he: 'אימון נקבע בהצלחה!' },
   workoutSaved: { en: 'Workout saved successfully!', he: 'אימון נשמר בהצלחה!' },
-  shareCopied: { en: 'Link copied to clipboard! Share it with friends 🔥', he: 'הקישור הועתק ללוח! שתף אותו עם חברים 🔥' },
   shareError: { en: 'Could not share. Please try again later.', he: 'לא היה ניתן לשתף. נסה שוב מאוחר יותר.' },
   noWorkoutHistory: { en: 'No workout history yet', he: 'עדיין אין היסטוריית אימונים' },
   startLoggingWorkouts: { en: 'Start logging workouts to see them here', he: 'התחל להזין אימונים כדי לראות אותם כאן' },
   workoutAchievement: { en: 'Workout Achievement 🏃‍♂️', he: 'הישג אימון 🏃‍♂️' },
   completedWorkout: { en: 'Completed workout! 🎯', he: 'השלמתי אימון! 🎯' },
-  timeLabel: { en: 'Time', he: 'זמן' },
+
   stepsLabel2: { en: 'Steps', he: 'צעדים' },
   distanceLabel2: { en: 'Distance', he: 'מרחק' },
   caloriesLabel: { en: 'Calories', he: 'קלוריות' },
@@ -518,9 +562,7 @@ export const translations: Translations = {
   
   // Social screen
   notEnoughPoints: { en: 'Not enough points!', he: 'אין מספיק נקודות!' },
-  registerForWorkout: { en: 'Register for workout (Free)', he: 'הרשם לאימון (חינם)' },
-  registerAndPay: { en: 'Register and pay {points} points', he: 'הרשם ותשלם {points} נקודות' },
-  insufficientPoints: { en: 'Insufficient points', he: 'אין מספיק נקודות' },
+
   
   // Social screen - main
   socialScreen: { en: 'Social Screen', he: 'המסך החברתי' },
@@ -535,7 +577,7 @@ export const translations: Translations = {
   firstCompletesGetsPoints: { en: 'First to complete gets +150 points', he: 'מי שמשלים מטרה ראשון מקבל +150 נקודות' },
   localCompetitions: { en: 'Local Competitions', he: 'תחרויות בסביבה' },
   registered: { en: 'Registered ✓', he: 'רשום ✓' },
-  participants: { en: 'participants', he: 'משתתפים' },
+
   detailsAndRegistration: { en: 'Details & Registration →', he: 'פרטים והרשמה →' },
   prize: { en: 'Prize: {points} points', he: 'פרס: {points} נקודות' },
   registerForCompetition: { en: 'Register for Competition', he: 'הרשם לתחרות' },
@@ -561,7 +603,6 @@ export const translations: Translations = {
   thursday25Feb: { en: 'Thursday, 25/02/2026', he: '25/02/2026 (יום חמישי)' },
   time1800: { en: '18:00', he: '18:00' },
   speedKmh: { en: '{speed} km/h', he: '{speed} קמ"ש' },
-  distanceKm: { en: '{distance} km', he: '{distance} ק"מ' },
   free: { en: 'Free', he: 'חינם' },
   howItWorks: { en: 'How it works?', he: 'איך זה עובד?' },
   workoutExplanation: { en: 'Free workouts (running, walking) - just register!\nSpecial workouts - pay with points you earned from nutrition and activity! Get bonus for every group workout.', he: 'אימונים חינמיים (ריצה, הליכה) - פשוט להירשם!\nאימונים מיוחדים - תשלום בנקודות שצברתם מהתזונה והפעילות! קבלו בונוס על כל אימון קבוצתי.' },
@@ -584,7 +625,7 @@ export const translations: Translations = {
   invite: { en: 'Invite', he: 'הזמן' },
   invitationSent: { en: 'Invitation sent to {username}! ✓', he: 'הזמנה נשלחה ל-{username}! ✓' },
   copyInvitationLink: { en: 'Copy invitation link 🔗', he: 'העתק קישור להזמנה 🔗' },
-  linkCopied: { en: 'Link copied! ✓', he: 'הקישור הועתק! ✓' },
+
   createChallengeBtn: { en: 'Create Challenge 🚀', he: 'צור אתגר 🚀' },
   liveCompetition: { en: 'Live Competition', he: 'תחרות בשידור חי' },
   telAvivMarathon: { en: 'Tel Aviv Marathon - The Park', he: 'מרתון תל אביב - הפארק אביב' },
